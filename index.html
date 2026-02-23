@@ -193,6 +193,83 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
 
 #string-hint{display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;font-size:11px;padding:5px 12px;border-radius:12px;z-index:100;pointer-events:none;}
 #string-hint.show{display:block;}
+
+/* FILES DROPDOWN */
+#files-btn-wrap{position:relative;display:flex;align-items:center;}
+#files-btn{display:flex;align-items:center;gap:3px;padding:2px 7px;height:22px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:2px;cursor:pointer;color:white;font-size:11px;font-weight:600;white-space:nowrap;user-select:none;}
+#files-btn:hover{background:rgba(255,255,255,.3);}
+#files-btn.open{background:rgba(255,255,255,.35);}
+#files-dropdown{display:none;position:absolute;top:26px;left:0;min-width:220px;background:#f4f4f4;border:1px solid #999;box-shadow:3px 3px 10px rgba(0,0,0,.35);z-index:1000;font-size:11px;}
+#files-dropdown.show{display:block;}
+.fd-header{background:linear-gradient(to bottom,#4b9fdb,#1a5ca8);color:white;font-weight:600;padding:5px 8px;font-size:11px;display:flex;align-items:center;justify-content:space-between;}
+.fd-section{padding:4px 0;border-bottom:1px solid #ddd;}
+.fd-section:last-child{border-bottom:none;}
+.fd-section-label{font-size:9px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px 1px 8px;}
+.fd-item{display:flex;align-items:center;gap:6px;padding:5px 8px;cursor:pointer;color:#111;}
+.fd-item:hover{background:linear-gradient(to bottom,#e8f4ff,#c8e4f8);}
+.fd-item-thumb{width:32px;height:24px;border:1px solid #bbb;background:#fff;flex-shrink:0;image-rendering:pixelated;}
+.fd-item-info{flex:1;min-width:0;}
+.fd-item-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;}
+.fd-item-date{font-size:9px;color:#777;margin-top:1px;}
+.fd-item-del{font-size:11px;color:#c00;opacity:.6;padding:0 4px;cursor:pointer;flex-shrink:0;}
+.fd-item-del:hover{opacity:1;}
+.fd-action{display:flex;align-items:center;gap:5px;padding:5px 8px;cursor:pointer;color:#1a6abf;font-weight:600;}
+.fd-action:hover{background:rgba(26,106,191,.1);}
+.fd-empty{padding:8px;color:#999;text-align:center;font-style:italic;font-size:11px;}
+#fd-autosave-badge{font-size:9px;background:rgba(0,200,80,.7);color:#fff;border-radius:3px;padding:1px 4px;margin-left:3px;font-weight:400;}
+
+/* PANEL BUTTON */
+#panel-btn{display:flex;align-items:center;gap:3px;padding:2px 7px;height:22px;background:rgba(255,200,0,.25);border:1px solid rgba(255,200,0,.5);border-radius:2px;cursor:pointer;color:white;font-size:11px;font-weight:600;white-space:nowrap;user-select:none;}
+#panel-btn:hover{background:rgba(255,200,0,.4);}
+
+/* BOTTOM PANEL SLIDE-UP */
+#bottom-panel{position:fixed;bottom:0;left:0;right:0;height:320px;background:#1a1a2e;border-top:3px solid #e94560;z-index:800;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;font-family:Segoe UI,Tahoma,sans-serif;}
+#bottom-panel.open{transform:translateY(0);}
+#bp-titlebar{background:linear-gradient(90deg,#16213e,#0f3460);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e9456040;flex-shrink:0;}
+#bp-title{color:#e94560;font-size:13px;font-weight:700;letter-spacing:.5px;display:flex;align-items:center;gap:6px;}
+#bp-close{color:#aaa;cursor:pointer;font-size:16px;line-height:1;}
+#bp-close:hover{color:#fff;}
+#bp-body{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:20px;}
+
+/* LOCK SCREEN */
+#bp-lock{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;}
+#bp-lock-icon{font-size:36px;filter:drop-shadow(0 0 8px #e9456080);}
+#bp-lock-msg{color:#ccc;font-size:13px;text-align:center;line-height:1.5;}
+#bp-code-row{display:flex;gap:8px;align-items:center;}
+#bp-code-inp{background:#0f3460;border:2px solid #e9456060;color:#fff;padding:6px 12px;font-size:13px;outline:none;border-radius:3px;width:160px;letter-spacing:1px;}
+#bp-code-inp:focus{border-color:#e94560;}
+#bp-code-inp.wrong{border-color:#ff4444;animation:shake .3s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+#bp-unlock-btn{background:#e94560;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-size:12px;font-weight:700;border-radius:3px;letter-spacing:.5px;}
+#bp-unlock-btn:hover{background:#ff6b81;}
+#bp-code-err{color:#ff6b81;font-size:11px;min-height:16px;}
+
+/* PANEL INTERIOR */
+#bp-interior{display:none;width:100%;flex-direction:column;align-items:center;gap:20px;}
+#bp-interior.show{display:flex;}
+#bp-shout-label{color:#e94560;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;align-self:flex-start;margin-bottom:-8px;}
+#bp-shout-row{display:flex;gap:10px;width:100%;max-width:600px;}
+#bp-shout-inp{flex:1;background:#0f3460;border:2px solid #e9456060;color:#fff;padding:8px 12px;font-size:13px;outline:none;border-radius:3px;}
+#bp-shout-inp:focus{border-color:#e94560;}
+#bp-shout-btn{background:linear-gradient(135deg,#e94560,#c23152);color:#fff;border:none;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:900;border-radius:3px;letter-spacing:1px;white-space:nowrap;text-transform:uppercase;}
+#bp-shout-btn:hover{filter:brightness(1.15);}
+#bp-shout-btn:active{transform:scale(.97);}
+#bp-shout-status{color:#888;font-size:11px;min-height:16px;}
+#bp-lock-out-btn{background:transparent;border:1px solid #e9456060;color:#e94560;padding:4px 12px;cursor:pointer;font-size:11px;border-radius:3px;}
+#bp-lock-out-btn:hover{background:#e9456020;}
+
+/* BROADCAST ALERT TOAST */
+#broadcast-toast-container{position:fixed;top:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.bc-toast{background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #e94560;border-radius:4px;padding:0;min-width:240px;max-width:320px;box-shadow:0 4px 20px rgba(233,69,96,.4);pointer-events:all;animation:toastIn .35s cubic-bezier(.4,0,.2,1);}
+@keyframes toastIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+.bc-toast.out{animation:toastOut .3s ease forwards;}
+@keyframes toastOut{to{opacity:0;transform:translateX(60px)}}
+.bc-toast-head{background:#e94560;padding:5px 10px;display:flex;align-items:center;justify-content:space-between;}
+.bc-toast-title{color:#fff;font-weight:800;font-size:12px;letter-spacing:.5px;display:flex;align-items:center;gap:5px;}
+.bc-toast-x{color:rgba(255,255,255,.7);cursor:pointer;font-size:13px;line-height:1;}
+.bc-toast-x:hover{color:#fff;}
+.bc-toast-body{padding:8px 10px;color:#e0e0e0;font-size:12px;line-height:1.5;word-break:break-word;}
+.bc-toast-label{font-size:10px;color:#e9456090;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
 </style>
 </head>
 <body>
@@ -203,6 +280,14 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
   <div id="paint-btn" title="Wiggly Paint" onclick="toggleAppMenu()">
     <svg viewBox="0 0 20 20" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/><circle cx="6" cy="8" r="2" fill="#ff69b4"/><circle cx="14" cy="8" r="2" fill="#43a047"/><circle cx="10" cy="14" r="2" fill="#ffd600"/></svg>
   </div>
+  <div id="files-btn-wrap">
+    <div id="files-btn" onclick="toggleFilesDropdown()" title="Your saved drawings">📂 Files <span id="fd-autosave-badge">●</span></div>
+    <div id="files-dropdown">
+      <div class="fd-header"><span>📂 Saved Drawings</span></div>
+      <div id="fd-body"></div>
+    </div>
+  </div>
+  <div id="panel-btn" onclick="openPanel()" title="Open Panel">⚡ Panel</div>
   <div id="qa">
     <div class="qa-btn" title="Save GIF (Ctrl+S)" onclick="exportGIF()">💾</div>
     <div class="qa-btn" title="Undo (Ctrl+Z)" onclick="undo()">↩</div>
@@ -218,9 +303,65 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
 <div id="ribbon-shell">
   <div id="tab-bar">
     <div class="ribbon-tab active" onclick="switchTab('home',this)">Home</div>
-    <div class="ribbon-tab" onclick="switchTab('view',this)">View</div>
   </div>
   <div id="ribbon-content">
+
+    <!-- VIEW CONTENTS always visible on the LEFT -->
+    <div class="rg" style="min-width:180px;border-right:2px solid #bbb;">
+      <div class="rg-body" style="flex-direction:column;gap:2px;">
+        <div style="font-size:10px;color:#555;margin-bottom:2px;font-weight:600;">Canvas Preset</div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;">
+          <div class="rb-sm" onclick="applyPreset('standard')">Std</div>
+          <div class="rb-sm" onclick="applyPreset('hd')">HD</div>
+          <div class="rb-sm" onclick="applyPreset('square')">Sq</div>
+          <div class="rb-sm" onclick="applyPreset('portrait')">Port</div>
+          <div class="rb-sm" onclick="applyPreset('banner')">Bnr</div>
+        </div>
+        <div class="rb-sm" style="color:#1a6abf;font-weight:600;" onclick="openCustomCanvas()">+ Custom...</div>
+      </div>
+      <div class="rg-label">Canvas</div>
+    </div>
+    <div class="rg" style="min-width:160px;border-right:2px solid #bbb;">
+      <div class="rg-body" style="flex-direction:column;gap:4px;justify-content:center;">
+        <div class="wig-row">
+          <span class="wig-lbl">Pixel Size</span>
+          <input class="wig-sl" type="range" id="pxSlider" min="1" max="8" value="2" step="1" oninput="changePixelSize(+this.value)">
+          <span class="wig-val" id="pxv">2×</span>
+        </div>
+        <div class="wig-row">
+          <span class="wig-lbl">Px Move</span>
+          <input class="wig-sl" type="range" id="mvSlider" min="0.01" max="4" step="0.01" value="1.0" oninput="wAmt=+this.value;document.getElementById('mvv').textContent=(+this.value).toFixed(2)">
+          <span class="wig-val" id="mvv">1.00</span>
+        </div>
+        <div class="wig-row">
+          <span class="wig-lbl">Speed</span>
+          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
+          <span class="wig-val" id="spv">2.5×</span>
+        </div>
+      </div>
+      <div class="rg-label">Pixels</div>
+    </div>
+    <div class="rg" style="border-right:2px solid #bbb;">
+      <div class="rg-body" style="flex-direction:column;gap:3px;align-items:flex-start;justify-content:center;">
+        <div class="rb-sm on" id="wiggle-rb" onclick="toggleWiggle()">〰 Wiggle ON</div>
+        <div class="rb-sm" id="snap-rb" onclick="toggleSnap()">⚡ Snap OFF</div>
+      </div>
+      <div class="rg-label">Wiggle Mode</div>
+    </div>
+    <div class="rg" style="border-right:2px solid #bbb;">
+      <div class="rg-body" style="align-items:center;">
+        <div class="rb" onclick="exportGIF()">
+          <svg viewBox="0 0 20 20"><rect x="3" y="2" width="14" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="2" width="2" height="5" fill="currentColor"/><rect x="7" y="12" width="6" height="4" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+          <div class="lbl">Save GIF</div>
+        </div>
+        <div class="rb" onclick="obliterate()">
+          <svg viewBox="0 0 20 20"><path d="M10 2l1.5 4.5 4.5-1.5-2.5 4 4 2-4.5 1 1.5 4.5-3.5-3-3.5 3 1.5-4.5-4.5-1 4-2-2.5-4 4.5 1.5Z" fill="#ff4400" stroke="#c00" stroke-width="0.5"/></svg>
+          <div class="lbl">Obliterate</div>
+        </div>
+      </div>
+      <div class="rg-label">Actions</div>
+    </div>
+
     <!-- HOME TAB -->
     <div class="ribbon-page active" id="tab-home">
 
@@ -283,11 +424,9 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
           </div>
           <div class="rb" data-t="string" onclick="setTool('string',this)" title="String / Node tool">
             <svg viewBox="0 0 20 20">
-              <!-- string lines -->
               <line x1="4" y1="16" x2="10" y2="4" stroke="#e53935" stroke-width="1.5" stroke-linecap="round"/>
               <line x1="10" y1="4" x2="16" y2="12" stroke="#e53935" stroke-width="1.5" stroke-linecap="round"/>
               <line x1="16" y1="12" x2="7" y2="14" stroke="#e53935" stroke-width="1.5" stroke-linecap="round"/>
-              <!-- nodes -->
               <circle cx="4"  cy="16" r="2.5" fill="#0078d7" stroke="#fff" stroke-width="1"/>
               <circle cx="10" cy="4"  r="2.5" fill="#0078d7" stroke="#fff" stroke-width="1"/>
               <circle cx="16" cy="12" r="2.5" fill="#0078d7" stroke="#fff" stroke-width="1"/>
@@ -341,7 +480,6 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
               <div class="sw" style="background:#795548" onclick="setColor('#795548',this)"></div>
               <div class="sw rb-swatch"><input type="color" id="cc" value="#ff0000" oninput="setColor(this.value,this.parentElement)"></div>
             </div>
-            <!-- Gradient creator button -->
             <div id="grad-btn" onclick="openGradPanel()" title="Gradient Maker">🎨 Gradient BG</div>
           </div>
         </div>
@@ -366,63 +504,6 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
       </div>
     </div>
 
-    <!-- VIEW TAB -->
-    <div class="ribbon-page" id="tab-view">
-      <div class="rg" style="min-width:180px;">
-        <div class="rg-body" style="flex-direction:column;gap:2px;">
-          <div style="font-size:10px;color:#555;margin-bottom:2px;font-weight:600;">Canvas Preset</div>
-          <div style="display:flex;gap:3px;flex-wrap:wrap;">
-            <div class="rb-sm" onclick="applyPreset('standard')">Std</div>
-            <div class="rb-sm" onclick="applyPreset('hd')">HD</div>
-            <div class="rb-sm" onclick="applyPreset('square')">Sq</div>
-            <div class="rb-sm" onclick="applyPreset('portrait')">Port</div>
-            <div class="rb-sm" onclick="applyPreset('banner')">Bnr</div>
-          </div>
-          <div class="rb-sm" style="color:#1a6abf;font-weight:600;" onclick="openCustomCanvas()">+ Custom...</div>
-        </div>
-        <div class="rg-label">Canvas</div>
-      </div>
-      <div class="rg" style="min-width:160px;">
-        <div class="rg-body" style="flex-direction:column;gap:4px;justify-content:center;">
-          <div class="wig-row">
-            <span class="wig-lbl">Pixel Size</span>
-            <input class="wig-sl" type="range" id="pxSlider" min="1" max="8" value="2" step="1" oninput="changePixelSize(+this.value)">
-            <span class="wig-val" id="pxv">2×</span>
-          </div>
-          <div class="wig-row">
-            <span class="wig-lbl">Px Move</span>
-            <input class="wig-sl" type="range" id="mvSlider" min="0.01" max="4" step="0.01" value="1.0" oninput="wAmt=+this.value;document.getElementById('mvv').textContent=(+this.value).toFixed(2)">
-            <span class="wig-val" id="mvv">1.00</span>
-          </div>
-          <div class="wig-row">
-            <span class="wig-lbl">Speed</span>
-            <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
-            <span class="wig-val" id="spv">2.5×</span>
-          </div>
-        </div>
-        <div class="rg-label">Pixels</div>
-      </div>
-      <div class="rg">
-        <div class="rg-body" style="flex-direction:column;gap:3px;align-items:flex-start;justify-content:center;">
-          <div class="rb-sm on" id="wiggle-rb" onclick="toggleWiggle()">〰 Wiggle ON</div>
-          <div class="rb-sm" id="snap-rb" onclick="toggleSnap()">⚡ Snap OFF</div>
-        </div>
-        <div class="rg-label">Wiggle Mode</div>
-      </div>
-      <div class="rg">
-        <div class="rg-body" style="align-items:center;">
-          <div class="rb" onclick="exportGIF()">
-            <svg viewBox="0 0 20 20"><rect x="3" y="2" width="14" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="2" width="2" height="5" fill="currentColor"/><rect x="7" y="12" width="6" height="4" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
-            <div class="lbl">Save GIF</div>
-          </div>
-          <div class="rb" onclick="obliterate()">
-            <svg viewBox="0 0 20 20"><path d="M10 2l1.5 4.5 4.5-1.5-2.5 4 4 2-4.5 1 1.5 4.5-3.5-3-3.5 3 1.5-4.5-4.5-1 4-2-2.5-4 4.5 1.5Z" fill="#ff4400" stroke="#c00" stroke-width="0.5"/></svg>
-            <div class="lbl">Obliterate</div>
-          </div>
-        </div>
-        <div class="rg-label">Actions</div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1485,7 +1566,7 @@ function floodFill(x,y,loopMask){
 // ══════════════════════════════════════════════════════════
 // HISTORY
 // ══════════════════════════════════════════════════════════
-function saveHistory(){history.push(dCtx.getImageData(0,0,W,H));if(history.length>60)history.shift();redoStack=[];}
+function saveHistory(){history.push(dCtx.getImageData(0,0,W,H));if(history.length>60)history.shift();redoStack=[];scheduleAutoSave&&scheduleAutoSave();}
 function undo(){if(!history.length){flash('Nothing to undo');return;}redoStack.push(dCtx.getImageData(0,0,W,H));dCtx.putImageData(history.pop(),0,0);flash('Undo');}
 function redo(){if(!redoStack.length){flash('Nothing to redo');return;}history.push(dCtx.getImageData(0,0,W,H));dCtx.putImageData(redoStack.pop(),0,0);}
 
@@ -1559,7 +1640,7 @@ function setColor(c,el){
 }
 function updateStatus(){document.getElementById('sb-size').textContent=`Canvas: ${W*SCALE}×${H*SCALE}`;}
 function flash(msg){document.getElementById('sb-tool').textContent=msg;setTimeout(()=>document.getElementById('sb-tool').textContent=TOOL_NAMES[tool]||tool,2800);}
-function newFile(){if(!confirm('New file? Unsaved work lost.'))return;commitSelection();history=[];redoStack=[];stringNodes=[];stringEdges=[];stringNodeIdCounter=0;stringActiveStart=null;dCtx.fillStyle='#fff';dCtx.fillRect(0,0,W,H);flash('New file');}
+function newFile(){if(!confirm('New file? Current drawing will be saved automatically.'))return;fsSave&&fsSave(false);commitSelection();history=[];redoStack=[];stringNodes=[];stringEdges=[];stringNodeIdCounter=0;stringActiveStart=null;dCtx.fillStyle='#fff';dCtx.fillRect(0,0,W,H);currentFileId=null;if(typeof updateFileTitle==='function')document.getElementById('title-text').textContent='Wiggly Paint';flash('New file');}
 function toggleAppMenu(){if(confirm('New file?'))newFile();}
 
 // Image import
@@ -1610,6 +1691,385 @@ document.addEventListener('keydown',e=>{
 updateStatus();
 document.getElementById('clr1').style.background='#111';
 document.getElementById('tb-clr1').style.background='#111';
+
+// ══════════════════════════════════════════════════════════
+// FILES SYSTEM — auto-save & dropdown
+// ══════════════════════════════════════════════════════════
+const FS_PREFIX = 'wiggly_file_';
+const FS_CURRENT_KEY = 'wiggly_current';
+let currentFileId = null;
+let autoSaveTimer = null;
+let autoSaveDirty = false;
+
+function fsNow(){ return Date.now(); }
+
+function fsAllFiles(){
+  const files=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(k&&k.startsWith(FS_PREFIX)){
+      try{const f=JSON.parse(localStorage.getItem(k));files.push(f);}catch(e){}
+    }
+  }
+  files.sort((a,b)=>b.modified-a.modified);
+  return files;
+}
+
+function fsNewId(){ return FS_PREFIX+(Date.now())+'_'+Math.random().toString(36).slice(2,6); }
+
+function fsSave(asNewFile){
+  const data = dc.toDataURL('image/png');
+  const id = asNewFile ? fsNewId() : (currentFileId || fsNewId());
+  const existing = (() => { try{ return JSON.parse(localStorage.getItem(id))||{}; }catch(e){ return {}; } })();
+  const file = {
+    id,
+    name: existing.name || ('Drawing '+(fsAllFiles().length+1)),
+    created: existing.created || fsNow(),
+    modified: fsNow(),
+    data,
+    thumb: fsThumb(data)
+  };
+  try{ localStorage.setItem(id, JSON.stringify(file)); }catch(e){ console.warn('Storage full, skipping autosave'); return; }
+  currentFileId = id;
+  localStorage.setItem(FS_CURRENT_KEY, id);
+  autoSaveDirty=false;
+  showAutoSaveBadge();
+}
+
+function fsThumb(dataUrl){
+  // Generate 64x48 thumb synchronously from existing dataUrl - just return it; we'll scale in CSS
+  return dataUrl;
+}
+
+function showAutoSaveBadge(){
+  const b=document.getElementById('fd-autosave-badge');
+  b.textContent='✓'; b.style.background='rgba(0,200,80,.8)';
+  setTimeout(()=>{ b.textContent='●'; b.style.background='rgba(0,200,80,.5)'; },1200);
+}
+
+function scheduleAutoSave(){
+  autoSaveDirty=true;
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer=setTimeout(()=>{ if(autoSaveDirty) fsSave(false); },800);
+}
+
+function fsLoad(id){
+  try{
+    const file=JSON.parse(localStorage.getItem(id));
+    if(!file||!file.data) return;
+    const img=new Image();
+    img.onload=()=>{
+      saveHistory();
+      dCtx.clearRect(0,0,W,H);
+      dCtx.fillStyle='#fff';
+      dCtx.fillRect(0,0,W,H);
+      // Draw scaled to fit canvas
+      const sx=W/img.width,sy=H/img.height,sc_=Math.min(sx,sy,1);
+      const dw=Math.round(img.width*sc_),dh=Math.round(img.height*sc_);
+      dCtx.drawImage(img,Math.round((W-dw)/2),Math.round((H-dh)/2),dw,dh);
+      currentFileId=id;
+      localStorage.setItem(FS_CURRENT_KEY,id);
+      updateFileTitle(file.name);
+      flash('Opened: '+file.name);
+      closeFilesDropdown();
+    };
+    img.src=file.data;
+  }catch(e){ console.error(e); }
+}
+
+function fsDelete(id, e){
+  e.stopPropagation();
+  const file=JSON.parse(localStorage.getItem(id)||'{}');
+  if(!confirm('Delete "'+( file.name||'drawing')+'"?')) return;
+  localStorage.removeItem(id);
+  if(currentFileId===id){ currentFileId=null; localStorage.removeItem(FS_CURRENT_KEY); }
+  renderFilesDropdown();
+}
+
+function fsRename(id, e){
+  e.stopPropagation();
+  try{
+    const file=JSON.parse(localStorage.getItem(id)||'{}');
+    const newName=prompt('Rename drawing:',file.name||'Drawing');
+    if(newName===null||newName.trim()==='') return;
+    file.name=newName.trim();
+    localStorage.setItem(id,JSON.stringify(file));
+    if(currentFileId===id) updateFileTitle(file.name);
+    renderFilesDropdown();
+  }catch(e){}
+}
+
+function updateFileTitle(name){
+  document.getElementById('title-text').textContent='Wiggly Paint — '+name;
+}
+
+function toggleFilesDropdown(){
+  const dd=document.getElementById('files-dropdown');
+  const btn=document.getElementById('files-btn');
+  if(dd.classList.contains('show')){ closeFilesDropdown(); return; }
+  renderFilesDropdown();
+  dd.classList.add('show');
+  btn.classList.add('open');
+}
+
+function closeFilesDropdown(){
+  document.getElementById('files-dropdown').classList.remove('show');
+  document.getElementById('files-btn').classList.remove('open');
+}
+
+function renderFilesDropdown(){
+  const body=document.getElementById('fd-body');
+  const files=fsAllFiles();
+  let html='';
+
+  html+='<div class="fd-section">';
+  html+='<div class="fd-action" onclick="fsNewDrawing()">✚ New Drawing</div>';
+  html+='<div class="fd-action" onclick="fsSaveAs()">💾 Save as new copy</div>';
+  html+='</div>';
+
+  if(files.length===0){
+    html+='<div class="fd-empty">No saved drawings yet.<br>Your work auto-saves as you draw!</div>';
+  } else {
+    html+='<div class="fd-section"><div class="fd-section-label">Saved Drawings ('+files.length+')</div>';
+    files.forEach(f=>{
+      const isActive=f.id===currentFileId;
+      const date=new Date(f.modified);
+      const dateStr=date.toLocaleDateString()+' '+date.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      html+=`<div class="fd-item${isActive?' on':''}" onclick="fsLoad('${f.id}')" title="${f.name}" style="${isActive?'background:linear-gradient(to bottom,#b8dafc,#8ec3f8);':''}">
+        <canvas class="fd-item-thumb" id="fthumb_${f.id.replace(/[^a-zA-Z0-9]/g,'_')}"></canvas>
+        <div class="fd-item-info">
+          <div class="fd-item-name">${f.name||'Untitled'}${isActive?' ●':''}</div>
+          <div class="fd-item-date">${dateStr}</div>
+        </div>
+        <div class="fd-item-del" onclick="fsRename('${f.id}',event)" title="Rename">✏</div>
+        <div class="fd-item-del" onclick="fsDelete('${f.id}',event)" title="Delete">✕</div>
+      </div>`;
+    });
+    html+='</div>';
+  }
+  body.innerHTML=html;
+
+  // Draw thumbnails
+  files.forEach(f=>{
+    const safeId=f.id.replace(/[^a-zA-Z0-9]/g,'_');
+    const cv=document.getElementById('fthumb_'+safeId);
+    if(!cv||!f.data) return;
+    cv.width=32;cv.height=24;
+    const ctx2=cv.getContext('2d');
+    const img=new Image();
+    img.onload=()=>{
+      ctx2.fillStyle='#fff';ctx2.fillRect(0,0,32,24);
+      const s=Math.min(32/img.width,24/img.height);
+      const dw=Math.round(img.width*s),dh=Math.round(img.height*s);
+      ctx2.drawImage(img,Math.round((32-dw)/2),Math.round((24-dh)/2),dw,dh);
+    };
+    img.src=f.data;
+  });
+}
+
+function fsNewDrawing(){
+  if(!confirm('Start a new drawing? Your current work is auto-saved.')) return;
+  fsSave(false); // save current first
+  commitSelection(); history=[]; redoStack=[]; stringNodes=[]; stringEdges=[]; stringNodeIdCounter=0; stringActiveStart=null;
+  dCtx.fillStyle='#fff'; dCtx.fillRect(0,0,W,H);
+  currentFileId=null;
+  document.getElementById('title-text').textContent='Wiggly Paint';
+  flash('New drawing');
+  closeFilesDropdown();
+}
+
+function fsSaveAs(){
+  fsSave(true);
+  flash('Saved as new copy!');
+  closeFilesDropdown();
+}
+
+// Close dropdown on outside click
+document.addEventListener('mousedown',e=>{
+  const wrap=document.getElementById('files-btn-wrap');
+  if(!wrap.contains(e.target)) closeFilesDropdown();
+});
+
+// ── HOOK AUTO-SAVE into existing draw pipeline ──
+// saveHistory() already calls scheduleAutoSave() directly.
+// Also hook mouse-up on hc for tools that don't call saveHistory (fill, single clicks)
+
+// Also hook mouse-up on hc so single clicks (fill, text stamp etc.) autosave
+hc.addEventListener('mouseup',()=>{ setTimeout(()=>scheduleAutoSave(),100); });
+hc.addEventListener('touchend',()=>{ setTimeout(()=>scheduleAutoSave(),100); });
+
+// Load most recent file on start (if any)
+(function initFiles(){
+  const lastId=localStorage.getItem(FS_CURRENT_KEY);
+  if(lastId && localStorage.getItem(lastId)){
+    try{
+      const file=JSON.parse(localStorage.getItem(lastId));
+      if(file&&file.data){
+        const img=new Image();
+        img.onload=()=>{
+          dCtx.fillStyle='#fff';dCtx.fillRect(0,0,W,H);
+          const sx=W/img.width,sy=H/img.height,sc_=Math.min(sx,sy,1);
+          const dw=Math.round(img.width*sc_),dh=Math.round(img.height*sc_);
+          dCtx.drawImage(img,Math.round((W-dw)/2),Math.round((H-dh)/2),dw,dh);
+          currentFileId=lastId;
+          updateFileTitle(file.name||'Drawing');
+        };
+        img.src=file.data;
+      }
+    }catch(e){}
+  }
+})();
+
+// ══════════════════════════════════════════════════════════
+// PANEL — bottom slide-up with code lock + shout broadcast
+// ══════════════════════════════════════════════════════════
+const PANEL_CODE = 'Grug4Life';
+let panelUnlocked = false;
+
+// Poll for broadcasts via localStorage (shared across tabs on same origin)
+const BC_KEY = 'wiggly_broadcast';
+let lastBcSeen = localStorage.getItem(BC_KEY+'_ts') || '0';
+
+function openPanel(){
+  document.getElementById('bottom-panel').classList.add('open');
+  if(panelUnlocked) showInterior();
+  else showLock();
+}
+function closePanel(){
+  document.getElementById('bottom-panel').classList.remove('open');
+}
+function showLock(){
+  document.getElementById('bp-lock').style.display='flex';
+  document.getElementById('bp-interior').classList.remove('show');
+  document.getElementById('bp-code-inp').value='';
+  document.getElementById('bp-code-err').textContent='';
+}
+function showInterior(){
+  document.getElementById('bp-lock').style.display='none';
+  document.getElementById('bp-interior').classList.add('show');
+}
+function tryUnlock(){
+  const inp=document.getElementById('bp-code-inp');
+  if(inp.value===PANEL_CODE){
+    panelUnlocked=true;
+    showInterior();
+  } else {
+    inp.classList.remove('wrong');
+    void inp.offsetWidth; // reflow to restart animation
+    inp.classList.add('wrong');
+    document.getElementById('bp-code-err').textContent='Wrong code. Try again.';
+    inp.value='';
+    playBeep(220,0.15);
+  }
+}
+function lockOut(){
+  panelUnlocked=false;
+  showLock();
+}
+document.getElementById('bp-code-inp').addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock();});
+
+function sendShout(){
+  const inp=document.getElementById('bp-shout-inp');
+  const msg=inp.value.trim();
+  if(!msg){ document.getElementById('bp-shout-status').textContent='Type something first!'; return; }
+  const ts=Date.now();
+  localStorage.setItem(BC_KEY, JSON.stringify({msg, ts}));
+  localStorage.setItem(BC_KEY+'_ts', String(ts));
+  lastBcSeen=String(ts);
+  inp.value='';
+  document.getElementById('bp-shout-status').textContent='📡 Broadcast sent!';
+  setTimeout(()=>document.getElementById('bp-shout-status').textContent='',2500);
+  showBroadcastToast(msg);
+  playBeep(880,0.12);
+}
+document.getElementById('bp-shout-inp').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')sendShout();});
+
+function showBroadcastToast(msg){
+  const container=document.getElementById('broadcast-toast-container');
+  const toast=document.createElement('div');
+  toast.className='bc-toast';
+  toast.innerHTML=`
+    <div class="bc-toast-head">
+      <div class="bc-toast-title">📢 Alert!</div>
+      <div class="bc-toast-x" onclick="dismissToast(this)">✕</div>
+    </div>
+    <div class="bc-toast-body">
+      <div class="bc-toast-label">Broadcast</div>
+      <div>${escHtml(msg)}</div>
+    </div>`;
+  container.appendChild(toast);
+  setTimeout(()=>dismissToast(toast.querySelector('.bc-toast-x')),7000);
+}
+function dismissToast(el){
+  const toast=el.closest('.bc-toast');
+  if(!toast||toast.classList.contains('out')) return;
+  toast.classList.add('out');
+  setTimeout(()=>toast.remove(),320);
+}
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Poll for broadcasts from other tabs/sessions
+setInterval(()=>{
+  try{
+    const stored=localStorage.getItem(BC_KEY);
+    if(!stored) return;
+    const {msg,ts}=JSON.parse(stored);
+    if(String(ts)!==lastBcSeen){
+      lastBcSeen=String(ts);
+      showBroadcastToast(msg);
+      playBeep(660,0.1);
+    }
+  }catch(e){}
+},1000);
+
+function playBeep(freq,vol){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator();
+    const g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.frequency.value=freq;
+    o.type='sine';
+    g.gain.setValueAtTime(vol,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.25);
+    o.start();o.stop(ctx.currentTime+0.25);
+  }catch(e){}
+}
 </script>
+
+<!-- BOTTOM PANEL -->
+<div id="bottom-panel">
+  <div id="bp-titlebar">
+    <div id="bp-title">⚡ WIGGLY PANEL <span style="font-size:10px;color:#e9456080;font-weight:400;letter-spacing:0;">— admin broadcast</span></div>
+    <div id="bp-close" onclick="closePanel()">✕</div>
+  </div>
+  <div id="bp-body">
+    <!-- LOCK SCREEN -->
+    <div id="bp-lock">
+      <div id="bp-lock-icon">🔒</div>
+      <div id="bp-lock-msg">To access panel, please enter the correct code.</div>
+      <div id="bp-code-row">
+        <input id="bp-code-inp" type="password" placeholder="Enter code..." autocomplete="off">
+        <button id="bp-unlock-btn" onclick="tryUnlock()">ENTER</button>
+      </div>
+      <div id="bp-code-err"></div>
+    </div>
+    <!-- INTERIOR (after unlock) -->
+    <div id="bp-interior">
+      <div style="color:#888;font-size:11px;align-self:flex-start;">🔓 Access granted — Grug approves.</div>
+      <div id="bp-shout-label">📢 Broadcast Message</div>
+      <div id="bp-shout-row">
+        <input id="bp-shout-inp" type="text" placeholder="Type your message... (Ctrl+Enter to send)" maxlength="200">
+        <button id="bp-shout-btn" onclick="sendShout()">SHOUT</button>
+      </div>
+      <div id="bp-shout-status"></div>
+      <button id="bp-lock-out-btn" onclick="lockOut()">🔒 Lock panel</button>
+    </div>
+  </div>
+</div>
+
+<!-- BROADCAST TOAST CONTAINER -->
+<div id="broadcast-toast-container"></div>
+
 </body>
 </html>
