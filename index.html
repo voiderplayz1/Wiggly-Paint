@@ -357,17 +357,17 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
       <div class="rg-body" style="flex-direction:column;gap:4px;justify-content:center;">
         <div class="wig-row">
           <span class="wig-lbl">Pixel Size</span>
-          <input class="wig-sl" type="range" id="pxSlider" min="1" max="8" value="2" step="1" oninput="changePixelSize(+this.value)">
+          <input class="wig-sl" type="range" id="pxSlider" min="1" max="3" value="2" step="1" oninput="changePixelSize(+this.value)">
           <span class="wig-val" id="pxv">2×</span>
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Px Move</span>
-          <input class="wig-sl" type="range" id="mvSlider" min="0.01" max="4" step="0.01" value="1.0" oninput="wAmt=+this.value;document.getElementById('mvv').textContent=(+this.value).toFixed(2)">
+          <input class="wig-sl" type="range" id="mvSlider" min="0.01" max="5" step="0.01" value="1.0" oninput="wAmt=+this.value;document.getElementById('mvv').textContent=(+this.value).toFixed(2)">
           <span class="wig-val" id="mvv">1.00</span>
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Speed</span>
-          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
+          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="20" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
           <span class="wig-val" id="spv">2.5×</span>
         </div>
         <div class="wig-row">
