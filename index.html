@@ -362,12 +362,12 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Px Move</span>
-          <input class="wig-sl" type="range" id="mvSlider" min="0.01" max="4" step="0.01" value="1.0" oninput="wAmt=+this.value;document.getElementById('mvv').textContent=(+this.value).toFixed(2)">
+          <input class="wig-sl" type="range" id="mvSlider" min="0.01" max="5" step="0.01" value="1.0" oninput="wAmt=+this.value;document.getElementById('mvv').textContent=(+this.value).toFixed(2)">
           <span class="wig-val" id="mvv">1.00</span>
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Speed</span>
-          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
+          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="20" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
           <span class="wig-val" id="spv">2.5×</span>
         </div>
         <div class="wig-row">
@@ -377,7 +377,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Density</span>
-          <input class="wig-sl" type="range" id="densSlider" min="0.1" max="20" value="5" step="0.1" oninput="wDensity=+this.value;document.getElementById('densv').textContent=(+this.value).toFixed(1)">
+          <input class="wig-sl" type="range" id="densSlider" min="0.1" max="24" value="5" step="0.1" oninput="wDensity=+this.value;document.getElementById('densv').textContent=(+this.value).toFixed(1)">
           <span class="wig-val" id="densv">5.0</span>
         </div>
       </div>
@@ -1479,16 +1479,25 @@ function finalizeSelection(rx,ry,rw,rh){
 
 function commitSelection(){
   if(!sel.active)return;
-  if(sel.floatImg){
-    const tmp=document.createElement('canvas');tmp.width=sel.rect.w;tmp.height=sel.rect.h;
-    const tCtx=tmp.getContext('2d');tCtx.clearRect(0,0,tmp.width,tmp.height);tCtx.putImageData(sel.floatImg,0,0);
+  // Use the original captured image as source — scale it to whatever the rect is now
+  const srcImg = resizeOrigImg || sel.floatImg;
+  if(srcImg){
+    const tmp=document.createElement('canvas');
+    tmp.width=srcImg.width; tmp.height=srcImg.height;
+    const tCtx=tmp.getContext('2d');
+    tCtx.clearRect(0,0,tmp.width,tmp.height);
+    tCtx.putImageData(srcImg,0,0);
     dCtx.save();dCtx.imageSmoothingEnabled=false;
-    const cx=sel.floatX+sel.rect.w/2,cy=sel.floatY+sel.rect.h/2;
-    dCtx.translate(cx,cy);dCtx.rotate(selRotAngle);dCtx.translate(-sel.rect.w/2,-sel.rect.h/2);
+    const cx=sel.floatX+sel.rect.w/2, cy=sel.floatY+sel.rect.h/2;
+    dCtx.translate(cx,cy);
+    dCtx.rotate(selRotAngle);
+    dCtx.translate(-sel.rect.w/2,-sel.rect.h/2);
+    // Draw original image scaled to the (possibly resized) rect dimensions
     dCtx.drawImage(tmp,0,0,sel.rect.w,sel.rect.h);
     dCtx.restore();
   }
   sel.active=false;sel.floatImg=null;resizeOrigRect=null;resizeOrigImg=null;selRotAngle=0;
+  lCtx.clearRect(0,0,W*SCALE,H*SCALE);
   spBroadcastCanvasSnap();
   spBroadcastGrabState('none');
 }
