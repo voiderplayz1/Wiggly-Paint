@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Wiggly Paint</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated;}
 body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden;height:100vh;display:flex;flex-direction:column;user-select:none;background:#6b6b6b;}
@@ -50,9 +52,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
 .sw.on{outline:2px solid #fff;box-shadow:0 0 0 3px #0054e3;z-index:3;position:relative;}
 .sw.rb-swatch{width:16px;height:16px;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);position:relative;}
 .sw.rb-swatch input{opacity:0;position:absolute;inset:0;cursor:pointer;width:100%;height:100%;}
-/* Gradient creator button */
-#grad-btn{display:flex;align-items:center;gap:3px;cursor:pointer;padding:2px 5px;border:1px solid #aaa;border-radius:2px;font-size:10px;background:linear-gradient(90deg,#f55,#fa0,#ff0,#0d0,#08f,#a0f);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.7);font-weight:600;white-space:nowrap;}
-#grad-btn:hover{filter:brightness(1.1);}
+
 #clr-preview-row{display:flex;align-items:center;gap:4px;margin-right:4px;}
 .clr-box{width:22px;height:22px;border:2px solid #888;cursor:pointer;}
 #clr1{background:#111;}
@@ -161,35 +161,6 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
 #img-drop-overlay.show{display:flex;}
 #img-drop-overlay span{color:#0054e3;font-size:22px;font-weight:700;background:rgba(255,255,255,0.9);padding:14px 28px;border:2px solid #0054e3;}
 
-/* GRADIENT PANEL */
-#grad-panel{position:fixed;top:0;right:-340px;width:320px;height:100vh;background:#f0f0f0;border-left:2px solid #999;box-shadow:-4px 0 16px rgba(0,0,0,.3);z-index:400;transition:right .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;font-size:12px;}
-#grad-panel.open{right:0;}
-#grad-panel-title{background:linear-gradient(to bottom,#4b9fdb,#1a5ca8);color:white;font-size:12px;font-weight:600;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-#grad-panel-body{flex:1;overflow-y:auto;padding:12px;}
-.gp-section{margin-bottom:14px;}
-.gp-label{font-weight:600;color:#333;margin-bottom:6px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
-.gp-type-row{display:flex;gap:6px;margin-bottom:4px;}
-.gp-type-btn{flex:1;padding:5px 4px;border:1px solid #aaa;background:linear-gradient(to bottom,#f8f8f8,#e0e0e0);cursor:pointer;font-size:11px;text-align:center;border-radius:2px;}
-.gp-type-btn:hover{background:linear-gradient(to bottom,#e8f4ff,#c8e4f8);border-color:#99caeb;}
-.gp-type-btn.on{background:linear-gradient(to bottom,#b8dafc,#8ec3f8);border-color:#3399cc;font-weight:600;}
-.gp-stops{display:flex;flex-direction:column;gap:6px;margin-bottom:6px;}
-.gp-stop-row{display:flex;align-items:center;gap:6px;}
-.gp-stop-swatch{width:28px;height:28px;border:2px solid #888;cursor:pointer;flex-shrink:0;position:relative;border-radius:2px;}
-.gp-stop-swatch input[type=color]{opacity:0;position:absolute;inset:0;cursor:pointer;width:100%;height:100%;}
-.gp-stop-pos{flex:1;}
-.gp-stop-del{width:20px;height:20px;border:1px solid #aaa;background:linear-gradient(to bottom,#f8f8f8,#e0e0e0);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:#c00;}
-.gp-stop-del:hover{background:#fdd;}
-.gp-add-stop{width:100%;padding:4px;border:1px dashed #aaa;background:transparent;cursor:pointer;font-size:11px;color:#1a6abf;text-align:center;margin-bottom:4px;}
-.gp-add-stop:hover{background:rgba(26,106,191,.08);}
-.gp-angle-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.gp-angle-sl{-webkit-appearance:none;appearance:none;height:5px;flex:1;border:1px solid #aaa;background:linear-gradient(to bottom,#d4d0c8,#f5f5f5);outline:none;cursor:pointer;}
-.gp-angle-sl::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:15px;background:linear-gradient(to bottom,#f8f8f8,#ddd);border:1px solid #888;cursor:pointer;}
-.gp-preview{width:100%;height:60px;border:1px solid #aaa;margin-bottom:10px;border-radius:2px;}
-.gp-btn-row{display:flex;gap:6px;}
-.gp-btn{flex:1;padding:6px 4px;border:1px solid #aaa;cursor:pointer;font-size:11px;text-align:center;font-family:Segoe UI,Tahoma,sans-serif;background:linear-gradient(to bottom,#f8f8f8,#e0e0e0);}
-.gp-btn:hover{background:linear-gradient(to bottom,#e8f4ff,#c8e4f8);border-color:#3399cc;}
-.gp-btn.primary{background:linear-gradient(to bottom,#5bb8f5,#1a6abf);color:white;border-color:#0d4a8a;font-weight:600;}
-.gp-btn.primary:hover{filter:brightness(1.1);}
 
 #string-hint{display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;font-size:11px;padding:5px 12px;border-radius:12px;z-index:100;pointer-events:none;}
 #string-hint.show{display:block;}
@@ -218,59 +189,117 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
 .fd-empty{padding:8px;color:#999;text-align:center;font-style:italic;font-size:11px;}
 #fd-autosave-badge{font-size:9px;background:rgba(0,200,80,.7);color:#fff;border-radius:3px;padding:1px 4px;margin-left:3px;font-weight:400;}
 
-/* PANEL BUTTON */
-#panel-btn{display:flex;align-items:center;gap:3px;padding:2px 7px;height:22px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:2px;cursor:pointer;color:white;font-size:11px;font-weight:600;white-space:nowrap;user-select:none;}
-#panel-btn:hover{background:rgba(255,255,255,.3);}
+#social-btn{display:flex;align-items:center;gap:3px;padding:2px 7px;height:22px;background:rgba(100,220,150,.3);border:1px solid rgba(100,220,150,.5);border-radius:2px;cursor:pointer;color:white;font-size:11px;font-weight:600;white-space:nowrap;user-select:none;}
+#social-btn:hover{background:rgba(100,220,150,.45);}
+#social-btn.connected{background:rgba(50,200,100,.5);border-color:rgba(50,200,100,.8);animation:socialPulse 2s infinite;}
+@keyframes socialPulse{0%,100%{box-shadow:0 0 0 0 rgba(50,200,100,.4)}50%{box-shadow:0 0 0 4px rgba(50,200,100,0)}}
 
-/* PANEL DIALOG — MS Paint floating dialog box */
-#panel-dialog{display:none;position:fixed;bottom:50px;left:50%;transform:translateX(-50%) translateY(20px);width:370px;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:2px 2px 0 #000,inset 0 0 0 1px #c0c0c0;z-index:800;font-size:11px;font-family:Segoe UI,Tahoma,Arial,sans-serif;opacity:0;transition:opacity .18s ease,transform .22s cubic-bezier(.4,0,.2,1);pointer-events:none;}
-#panel-dialog.open{display:block;opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
-#pd-titlebar{background:linear-gradient(to bottom,#4b9fdb 0%,#1e6abf 50%,#1a5ca8 51%,#2b7fd4 100%);color:white;font-size:11px;font-weight:700;padding:2px 4px 3px 5px;display:flex;align-items:center;justify-content:space-between;user-select:none;}
-#pd-title-left{display:flex;align-items:center;gap:4px;}
-#pd-icon{width:13px;height:13px;background:radial-gradient(circle at 40% 35%,#ff69b4,#d4006a);border-radius:50%;border:1px solid #7a0035;flex-shrink:0;}
-#pd-winbtns{display:flex;gap:2px;}
-#pd-close-btn{width:16px;height:14px;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid;border-color:#fff #808080 #808080 #fff;display:flex;align-items:center;justify-content:center;font-size:8px;cursor:pointer;color:#000;font-weight:700;line-height:1;}
-#pd-close-btn:hover{background:linear-gradient(to bottom,#ffd0d0,#e08080);border-color:#fff #600 #600 #fff;}
-#pd-close-btn:active{border-color:#808080 #fff #fff #808080;}
-#pd-body{padding:8px 10px;display:flex;flex-direction:column;gap:7px;background:#c0c0c0;}
-/* sunken panel for messages */
-.pd-sunken{background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;padding:5px 7px;font-size:11px;color:#000;line-height:1.5;}
-/* Lock section */
-#pd-lock{display:flex;flex-direction:column;gap:7px;}
-#pd-code-row{display:flex;align-items:center;gap:5px;}
-#pd-code-label{color:#000;white-space:nowrap;min-width:48px;}
-#pd-code-inp{flex:1;border:2px solid;border-color:#808080 #fff #fff #808080;background:#fff;padding:2px 4px;font-size:11px;font-family:Segoe UI,Tahoma,Arial,sans-serif;outline:none;box-shadow:none;}
-#pd-code-inp:focus{border-color:#0054e3 #d0d8e8 #d0d8e8 #0054e3;}
-#pd-code-inp.wrong{background:#ffe8e8;animation:pdshake .25s;}
-@keyframes pdshake{0%,100%{transform:translateX(0)}30%{transform:translateX(-5px)}70%{transform:translateX(5px)}}
-#pd-code-err{color:#c00;font-size:10px;min-height:14px;padding-left:2px;}
-/* Interior section */
-#pd-interior{display:none;flex-direction:column;gap:7px;}
-#pd-interior.show{display:flex;}
-#pd-shout-row{display:flex;gap:4px;align-items:center;}
-#pd-shout-inp{flex:1;border:2px solid;border-color:#808080 #fff #fff #808080;background:#fff;padding:2px 4px;font-size:11px;font-family:Segoe UI,Tahoma,Arial,sans-serif;outline:none;}
-#pd-shout-inp:focus{border-color:#0054e3 #d0d8e8 #d0d8e8 #0054e3;}
-/* MS Paint style buttons */
-.pd-btn{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;padding:3px 14px;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;cursor:pointer;white-space:nowrap;color:#000;min-width:60px;text-align:center;}
-.pd-btn:hover{background:#d0d8e8;}
-.pd-btn:active{border-color:#808080 #fff #fff #808080;padding:4px 13px 2px 15px;}
-#pd-shout-btn{font-weight:700;border-color:#fff #808080 #808080 #fff;}
-#pd-shout-status{font-size:10px;color:#444;min-height:13px;padding-left:2px;}
-#pd-footer{display:flex;justify-content:flex-end;gap:4px;padding-top:5px;border-top:1px solid #808080;margin-top:2px;}
+/* ACCOUNT MODAL */
+#acct-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1200;align-items:center;justify-content:center;}
+#acct-overlay.show{display:flex;}
+#acct-box{width:340px;background:#f0f0f0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;font-size:12px;font-family:Segoe UI,Tahoma,Arial,sans-serif;}
+#acct-titlebar{background:linear-gradient(to bottom,#4b9fdb 0%,#1e6abf 50%,#1a5ca8 51%,#2b7fd4 100%);color:white;font-size:12px;font-weight:700;padding:4px 6px;display:flex;align-items:center;justify-content:space-between;}
+#acct-tabs{display:flex;background:#e0e0e0;border-bottom:1px solid #bbb;}
+.acct-tab{flex:1;padding:7px 4px;text-align:center;cursor:pointer;font-size:11px;font-weight:700;color:#555;border-bottom:3px solid transparent;}
+.acct-tab:hover{background:#e8e8e8;color:#333;}
+.acct-tab.active{background:#f0f0f0;color:#1a5ca8;border-bottom-color:#1a5ca8;}
+#acct-body{padding:16px;}
+.acct-field{margin-bottom:12px;}
+.acct-field label{display:block;font-size:11px;font-weight:600;color:#333;margin-bottom:4px;}
+.acct-inp{width:100%;border:2px solid;border-color:#808080 #fff #fff #808080;background:#fff;padding:4px 6px;font-size:12px;font-family:Segoe UI,Tahoma,Arial,sans-serif;outline:none;}
+.acct-inp:focus{border-color:#0054e3 #d0d8e8 #d0d8e8 #0054e3;}
+.acct-inp.err-inp{background:#fff0f0;border-color:#c00 #faa #faa #c00;}
+.acct-hint{font-size:10px;color:#777;margin-top:3px;}
+.acct-err{font-size:11px;color:#c00;min-height:16px;margin-bottom:8px;font-weight:600;}
+.acct-ok{font-size:11px;color:#080;min-height:16px;margin-bottom:8px;font-weight:600;}
+.acct-footer{display:flex;justify-content:flex-end;gap:8px;padding-top:10px;border-top:1px solid #ccc;}
+.acct-btn{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:12px;padding:5px 20px;border:2px solid;border-color:#fff #808080 #808080 #fff;background:#c0c0c0;cursor:pointer;font-weight:600;}
+.acct-btn:hover{background:#d0d8e8;}
+.acct-btn:active{border-color:#808080 #fff #fff #808080;}
+.acct-btn.primary{background:linear-gradient(to bottom,#5bb8f5,#1a6abf);color:#fff;border-color:#0d4a8a;}
+.acct-btn.primary:hover{filter:brightness(1.1);}
+#acct-logged-in{padding:16px;display:none;flex-direction:column;gap:10px;}
+#acct-logged-in.show{display:flex;}
+.acct-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#4b9fdb,#7b1fa2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700;border:2px solid #888;flex-shrink:0;}
+.acct-user-row{display:flex;align-items:center;gap:12px;}
+.acct-username-display{font-size:16px;font-weight:700;color:#1a5ca8;}
+.acct-joined-date{font-size:10px;color:#888;}
 
-/* BROADCAST TOAST — MS Paint style */
-#broadcast-toast-container{position:fixed;top:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none;}
-.bc-toast{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:2px 2px 0 #000;min-width:200px;max-width:260px;pointer-events:all;animation:toastIn .18s ease;}
-@keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-.bc-toast.out{animation:toastOut .18s ease forwards;}
-@keyframes toastOut{to{opacity:0;transform:translateX(30px)}}
-.bc-toast-head{background:linear-gradient(to bottom,#4b9fdb 0%,#1e6abf 50%,#1a5ca8 51%,#2b7fd4 100%);padding:2px 4px 3px 5px;display:flex;align-items:center;justify-content:space-between;}
-.bc-toast-title{color:#fff;font-weight:700;font-size:11px;display:flex;align-items:center;gap:3px;}
-.bc-toast-x{width:14px;height:12px;background:linear-gradient(to bottom,#f0f0f0,#d0d0d0);border:1px solid;border-color:#fff #808080 #808080 #fff;display:flex;align-items:center;justify-content:center;color:#000;font-size:8px;font-weight:700;cursor:pointer;flex-shrink:0;}
-.bc-toast-x:hover{background:#fdd;}
-.bc-toast-body{padding:6px 8px;font-size:11px;color:#000;background:#c0c0c0;}
-.bc-toast-label{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.4px;}
-.bc-toast-msg{font-weight:600;word-break:break-word;margin-top:2px;background:#fff;border:2px solid;border-color:#808080 #fff #fff #808080;padding:3px 5px;}
+/* NO ACCOUNT ERROR OVERLAY */
+#noacct-error{display:none;position:fixed;inset:0;z-index:1100;align-items:center;justify-content:center;pointer-events:none;}
+#noacct-error.show{display:flex;}
+#noacct-error-box{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;min-width:280px;max-width:340px;font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:12px;pointer-events:all;animation:errPopIn .15s cubic-bezier(.4,0,.2,1);}
+@keyframes errPopIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+#noacct-error-title{background:linear-gradient(to bottom,#cc0000,#880000);color:#fff;font-weight:700;padding:4px 6px;display:flex;align-items:center;justify-content:space-between;font-size:12px;}
+#noacct-error-body{padding:14px;display:flex;flex-direction:column;gap:10px;}
+.noacct-icon{font-size:32px;text-align:center;}
+.noacct-btns{display:flex;gap:8px;justify-content:center;}
+.noacct-btn{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;padding:5px 16px;border:2px solid;border-color:#fff #808080 #808080 #fff;background:#c0c0c0;cursor:pointer;font-weight:600;}
+.noacct-btn:hover{background:#d0d8e8;}
+.noacct-btn:active{border-color:#808080 #fff #fff #808080;}
+.noacct-btn.primary{background:linear-gradient(to bottom,#5bb8f5,#1a6abf);color:#fff;border-color:#0d4a8a;}
+.noacct-btn.primary:hover{filter:brightness(1.1);}
+
+/* SOCIAL DRAWING PANEL */
+#social-panel{position:fixed;top:0;right:-380px;width:360px;height:100vh;background:#f0f0f0;border-left:2px solid #999;box-shadow:-4px 0 16px rgba(0,0,0,.3);z-index:400;transition:right .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;font-size:12px;}
+#social-panel.open{right:0;}
+#social-panel-title{background:linear-gradient(to bottom,#4b9fdb,#1a5ca8);color:white;font-size:12px;font-weight:600;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+#social-panel-body{flex:1;overflow-y:auto;padding:0;display:flex;flex-direction:column;}
+.sp-tab-bar{display:flex;border-bottom:2px solid #bbb;background:#e8e8e8;flex-shrink:0;}
+.sp-tab{flex:1;padding:6px 4px;text-align:center;cursor:pointer;font-size:11px;font-weight:600;color:#555;border-bottom:2px solid transparent;margin-bottom:-2px;}
+.sp-tab:hover{background:#f0f0f0;color:#333;}
+.sp-tab.active{background:#f0f0f0;color:#1a5ca8;border-bottom-color:#1a5ca8;}
+.sp-page{display:none;padding:12px;flex:1;flex-direction:column;gap:10px;}
+.sp-page.active{display:flex;}
+.sp-section-label{font-weight:700;font-size:11px;color:#333;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.sp-input{width:100%;border:1px solid #aaa;padding:4px 6px;font-size:11px;font-family:Segode UI,Tahoma,sans-serif;box-shadow:inset 1px 1px 2px rgba(0,0,0,.1);}
+.sp-input:focus{border-color:#0054e3;outline:none;}
+.sp-btn{padding:5px 12px;border:1px solid #aaa;background:linear-gradient(to bottom,#f8f8f8,#e0e0e0);cursor:pointer;font-size:11px;font-family:Segode UI,Tahoma,sans-serif;white-space:nowrap;}
+.sp-btn:hover{background:linear-gradient(to bottom,#e8f4ff,#c8e4f8);border-color:#3399cc;}
+.sp-btn.primary{background:linear-gradient(to bottom,#5bb8f5,#1a6abf);color:white;border-color:#0d4a8a;font-weight:600;}
+.sp-btn.primary:hover{filter:brightness(1.1);}
+.sp-btn.danger{background:linear-gradient(to bottom,#f88,#d44);color:white;border-color:#a00;}
+.sp-btn.danger:hover{filter:brightness(1.1);}
+.sp-btn.green{background:linear-gradient(to bottom,#5d5,#292);color:white;border-color:#050;}
+.sp-btn.green:hover{filter:brightness(1.1);}
+.sp-row{display:flex;gap:6px;align-items:center;}
+.sp-label{font-size:11px;color:#444;min-width:70px;flex-shrink:0;}
+.sp-status-box{background:#fff;border:1px solid #bbb;padding:6px 8px;font-size:11px;color:#333;border-left:3px solid #aaa;min-height:28px;word-break:break-all;}
+.sp-status-box.ok{border-left-color:#2a2;}
+.sp-status-box.err{border-left-color:#c00;color:#c00;}
+.sp-status-box.info{border-left-color:#18f;}
+
+#sp-chat-log{flex:1;overflow-y:auto;background:#fff;border:1px solid #bbb;padding:6px;display:flex;flex-direction:column;gap:3px;min-height:80px;max-height:150px;}
+.sp-chat-msg{font-size:11px;line-height:1.4;}
+.sp-chat-msg .sp-chat-who{font-weight:700;color:#1a5ca8;}
+.sp-chat-msg .sp-chat-who.me{color:#155;}
+.sp-chat-msg .sp-chat-who.sys{color:#888;font-style:italic;}
+.sp-chat-row{display:flex;gap:4px;}
+.sp-toggle-row{display:flex;align-items:center;gap:6px;margin:2px 0;}
+.sp-checkbox{width:13px;height:13px;cursor:pointer;}
+.sp-divider{border:none;border-top:1px solid #ccc;margin:4px 0;}
+.sp-code-box{background:#fff;border:2px solid #1a5ca8;padding:8px;font-size:15px;font-weight:700;letter-spacing:2px;text-align:center;color:#1a5ca8;cursor:pointer;user-select:all;}
+.sp-code-box:hover{background:#e8f4ff;}
+.sp-empty{color:#999;text-align:center;font-style:italic;padding:12px;}
+.sp-spinner{display:inline-block;width:12px;height:12px;border:2px solid #bbb;border-top-color:#1a5ca8;border-radius:50%;animation:spSpin .6s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spSpin{to{transform:rotate(360deg)}}
+
+
+
+/* AVATAR */
+.acct-avatar{overflow:hidden;}
+.acct-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+#acct-pfp-upload{display:none;}
+.acct-pfp-btn{font-size:10px;cursor:pointer;color:#1a5ca8;text-decoration:underline;text-align:center;}
+.chat-avatar{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4b9fdb,#7b1fa2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;border:1px solid rgba(0,0,0,.2);overflow:hidden;}
+.chat-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.sp-chat-msg{display:flex;align-items:flex-start;gap:5px;}
+.sp-chat-msg-body{flex:1;min-width:0;font-size:11px;line-height:1.4;}
+.sp-chat-msg-body .sp-chat-who{font-weight:700;color:#1a5ca8;}
+.sp-chat-msg-body .sp-chat-who.me{color:#155;}
+.sp-chat-msg-body .sp-chat-who.sys{color:#888;font-style:italic;}
+
+
 </style>
 </head>
 <body>
@@ -288,7 +317,9 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
       <div id="fd-body"></div>
     </div>
   </div>
-  <div id="panel-btn" onclick="openPanel()" title="Open Panel">⚡ Panel</div>
+
+  <div id="social-btn" onclick="openSocialPanel()" title="Social Drawing">🎨 Social</div>
+  <div id="acct-btn" onclick="openAccountModal()" title="Account" style="display:flex;align-items:center;gap:3px;padding:2px 7px;height:22px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:2px;cursor:pointer;color:white;font-size:11px;font-weight:600;white-space:nowrap;user-select:none;">👤 Account</div>
   <div id="qa">
     <div class="qa-btn" title="Save GIF (Ctrl+S)" onclick="exportGIF()">💾</div>
     <div class="qa-btn" title="Undo (Ctrl+Z)" onclick="undo()">↩</div>
@@ -336,8 +367,18 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Speed</span>
-          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
+          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="14" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
           <span class="wig-val" id="spv">2.5×</span>
+        </div>
+        <div class="wig-row">
+          <span class="wig-lbl">Opacity</span>
+          <input class="wig-sl" type="range" min="5" max="100" value="100" oninput="bOp=this.value/100;document.getElementById('ov').textContent=this.value+'%'">
+          <span class="wig-val" id="ov">100%</span>
+        </div>
+        <div class="wig-row">
+          <span class="wig-lbl">Density</span>
+          <input class="wig-sl" type="range" id="densSlider" min="0.1" max="20" value="5" step="0.1" oninput="wDensity=+this.value;document.getElementById('densv').textContent=(+this.value).toFixed(1)">
+          <span class="wig-val" id="densv">5.0</span>
         </div>
       </div>
       <div class="rg-label">Pixels</div>
@@ -346,6 +387,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
       <div class="rg-body" style="flex-direction:column;gap:3px;align-items:flex-start;justify-content:center;">
         <div class="rb-sm on" id="wiggle-rb" onclick="toggleWiggle()">〰 Wiggle ON</div>
         <div class="rb-sm" id="snap-rb" onclick="toggleSnap()">⚡ Snap OFF</div>
+        <div class="rb-sm" id="linewiggle-rb" onclick="toggleLineWiggle()">〜 Line Wiggle OFF</div>
       </div>
       <div class="rg-label">Wiggle Mode</div>
     </div>
@@ -456,7 +498,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
         <div class="rg-label">Size</div>
       </div>
 
-      <!-- COLORS with gradient creator -->
+      <!-- COLORS -->
       <div class="rg" style="padding-right:4px;">
         <div class="rg-body" style="align-items:flex-start;gap:4px;">
           <div id="clr-preview-row">
@@ -481,27 +523,28 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
               <div class="sw" style="background:#795548" onclick="setColor('#795548',this)"></div>
               <div class="sw rb-swatch"><input type="color" id="cc" value="#ff0000" oninput="setColor(this.value,this.parentElement)"></div>
             </div>
-            <div id="grad-btn" onclick="openGradPanel()" title="Gradient Maker">🎨 Gradient BG</div>
           </div>
         </div>
         <div class="rg-label">Colors</div>
       </div>
 
-      <!-- OPTIONS -->
-      <div class="rg">
-        <div class="rg-body" style="flex-direction:column;justify-content:center;gap:4px;min-width:120px;">
-          <div class="wig-row">
-            <span class="wig-lbl">Opacity</span>
-            <input class="wig-sl" type="range" min="5" max="100" value="100" oninput="bOp=this.value/100;document.getElementById('ov').textContent=this.value+'%'">
-            <span class="wig-val" id="ov">100%</span>
-          </div>
-          <div class="wig-row" id="txt-size-row" style="display:none;">
-            <span class="wig-lbl">Txt Size</span>
-            <input class="wig-sl" type="range" min="8" max="96" value="24" oninput="txtSize=+this.value;document.getElementById('tsv').textContent=this.value+'px';updateTextInputStyle()">
-            <span class="wig-val" id="tsv">24px</span>
+      <!-- NEWS BUTTON -->
+      <div class="rg" style="min-width:70px;">
+        <div class="rg-body" style="align-items:center;justify-content:center;">
+          <div class="rb" onclick="openNewsModal()" style="min-width:54px;">
+            <svg viewBox="0 0 20 20" width="20" height="20"><rect x="2" y="3" width="16" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="10" x2="15" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="13" x2="11" y2="13" stroke="currentColor" stroke-width="1.2"/></svg>
+            <div class="lbl">News</div>
           </div>
         </div>
-        <div class="rg-label">Options</div>
+        <div class="rg-label">Updates</div>
+      </div>
+      <!-- hidden txt-size-row still needed for text tool -->
+      <div style="display:none;">
+        <div class="wig-row" id="txt-size-row">
+          <span class="wig-lbl">Txt Size</span>
+          <input class="wig-sl" type="range" min="8" max="96" value="24" oninput="txtSize=+this.value;document.getElementById('tsv').textContent=this.value+'px';updateTextInputStyle()">
+          <span class="wig-val" id="tsv">24px</span>
+        </div>
       </div>
     </div>
 
@@ -601,6 +644,36 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
   <span id="sb-zoom" style="margin-left:auto;">Pixel: 2×</span>
 </div>
 
+<!-- NEWS MODAL -->
+<div class="modal-bg" id="news-modal" onclick="if(event.target===this)closeNewsModal()">
+  <div class="modal" style="min-width:380px;max-width:480px;">
+    <div class="modal-title">📰 News &amp; Patch Notes<span class="modal-close" onclick="closeNewsModal()">✕</span></div>
+    <div class="modal-body" style="padding:16px 18px;">
+      <div style="font-size:13px;font-weight:700;color:#1a5ca8;margin-bottom:8px;">Hello!! 👋</div>
+      <div style="font-size:12px;color:#333;line-height:1.7;margin-bottom:14px;">
+        I've recently added a new wiggle mode (Line Wiggle!) and a new Density slider in Pixels — lots of bugs are fixed, and this should make the actual experience 100% better. Don't forget you can save your drawings in the Files section! 🎨
+      </div>
+      <div style="font-size:11px;font-weight:700;color:#555;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #ddd;">🔧 Patch Notes</div>
+      <div style="font-size:12px;color:#444;line-height:2;">
+        <span style="color:#1a9e1a;font-weight:700;">✔</span>&nbsp; Fixed drawing errors<br>
+        <span style="color:#1a9e1a;font-weight:700;">✔</span>&nbsp; Room fixes<br>
+        <span style="color:#1a9e1a;font-weight:700;">✔</span>&nbsp; Connection fixes<br>
+        <span style="color:#1a9e1a;font-weight:700;">✔</span>&nbsp; Drawings not appearing<br>
+        <span style="color:#1a9e1a;font-weight:700;">✔</span>&nbsp; Edits not appearing<br>
+        <span style="color:#1a9e1a;font-weight:700;">✔</span>&nbsp; Host issues<br>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:#555;letter-spacing:.5px;text-transform:uppercase;margin:10px 0 8px;padding-bottom:5px;border-bottom:1px solid #ddd;">✨ New Features</div>
+      <div style="font-size:12px;color:#444;line-height:2;">
+        <span style="color:#1a5ca8;font-weight:700;">★</span>&nbsp; Line Wiggle mode — edges breathe in and out<br>
+        <span style="color:#1a5ca8;font-weight:700;">★</span>&nbsp; Density slider (0.1 – 20) — control fill amount live<br>
+      </div>
+      <div class="modal-footer" style="margin-top:14px;">
+        <button class="win-btn-ok" onclick="closeNewsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="modal-canvas">
   <div class="modal">
     <div class="modal-title">Custom Canvas Size<span class="modal-close" onclick="closeModal('modal-canvas')">✕</span></div>
@@ -638,41 +711,6 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
   </div>
 </div>
 
-<!-- GRADIENT PANEL -->
-<div id="grad-panel">
-  <div id="grad-panel-title">
-    <span>🎨 Gradient Maker</span>
-    <span style="cursor:pointer;opacity:.8;font-size:14px;" onclick="closeGradPanel()">✕</span>
-  </div>
-  <div id="grad-panel-body">
-    <div class="gp-section">
-      <div class="gp-label">Type</div>
-      <div class="gp-type-row">
-        <div class="gp-type-btn on" id="gp-type-radial" onclick="setGradType('radial')">◉ Radial</div>
-        <div class="gp-type-btn" id="gp-type-linear" onclick="setGradType('linear')">▬ Linear</div>
-        <div class="gp-type-btn" id="gp-type-random" onclick="setGradType('random')">🎲 Random</div>
-      </div>
-    </div>
-    <div class="gp-section" id="gp-angle-section" style="display:none;">
-      <div class="gp-label">Direction</div>
-      <div class="gp-angle-row">
-        <span style="font-size:10px;color:#555;width:30px;" id="gp-angle-dir">→</span>
-        <input class="gp-angle-sl" type="range" id="gp-angle" min="0" max="360" value="90" oninput="updateGradAngle(this.value)">
-        <span style="font-size:10px;color:#333;width:34px;text-align:right;" id="gp-angle-val">90°</span>
-      </div>
-    </div>
-    <div class="gp-section" id="gp-colors-section">
-      <div class="gp-label">Colors</div>
-      <div class="gp-stops" id="gp-stops"></div>
-      <button class="gp-add-stop" onclick="addGradStop()">+ Add color stop</button>
-    </div>
-    <canvas class="gp-preview" id="gp-preview"></canvas>
-    <div class="gp-btn-row">
-      <button class="gp-btn" onclick="randomizeGrad()">🎲 Randomize</button>
-      <button class="gp-btn primary" onclick="applyGradPanel()">✓ Apply</button>
-    </div>
-  </div>
-</div>
 
 <script>
 
@@ -697,229 +735,115 @@ function setCanvasSize(drawW,drawH,keepImg){
 function initDefault(){const area=document.getElementById('canvas-area');const aw=Math.floor((area.clientWidth-24)/SCALE);const ah=Math.floor((area.clientHeight-24)/SCALE);setCanvasSize(Math.min(aw,900),Math.min(ah,660),false);}
 window.addEventListener('load',()=>{initDefault();renderLoop();openGuide();});
 const PRESETS={standard:null,hd:{w:1280,h:720},square:{w:512,h:512},portrait:{w:360,h:640},banner:{w:800,h:200}};
-function applyPreset(name){if(name==='standard'){initDefault();flash('Standard canvas');return;}const p=PRESETS[name];if(!p)return;setCanvasSize(Math.round(p.w/SCALE),Math.round(p.h/SCALE),false);flash(name+': '+p.w+'×'+p.h);}
+function applyPreset(name){if(spInRoom&&!spIsHost){flash('Only the room owner can change canvas size!');return;}if(name==='standard'){initDefault();flash('Standard canvas');return;}const p=PRESETS[name];if(!p)return;setCanvasSize(Math.round(p.w/SCALE),Math.round(p.h/SCALE),false);flash(name+': '+p.w+'×'+p.h);}
 function openCustomCanvas(){document.getElementById('inp-w').value=W*SCALE;document.getElementById('inp-h').value=H*SCALE;document.getElementById('aspect-warn').textContent='';document.getElementById('modal-canvas').classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 function validateAspect(){const w=+document.getElementById('inp-w').value,h=+document.getElementById('inp-h').value;const warn=document.getElementById('aspect-warn'),ok=document.getElementById('btn-apply-canvas');if(w>0&&h>0&&(w/h)>(16/9+0.001)){warn.textContent=`⚠ Too wide! Max ${Math.floor(h*16/9)}px`;ok.disabled=true;ok.style.opacity='0.5';}else{warn.textContent='';ok.disabled=false;ok.style.opacity='1';}}
-function applyCustomCanvas(){const w=Math.round(+document.getElementById('inp-w').value/SCALE);const h=Math.round(+document.getElementById('inp-h').value/SCALE);if(!w||!h)return;closeModal('modal-canvas');setCanvasSize(w,h,false);flash('Custom: '+(w*SCALE)+'×'+(h*SCALE));}
-function changePixelSize(v){SCALE=v;document.getElementById('pxv').textContent=v+'×';document.getElementById('sb-zoom').textContent='Pixel: '+v+'×';setCanvasSize(W,H,true);flash('Pixel size: '+v+'×');}
+function applyCustomCanvas(){if(spInRoom&&!spIsHost){flash('Only the room owner can change canvas size!');return;}const w=Math.round(+document.getElementById('inp-w').value/SCALE);const h=Math.round(+document.getElementById('inp-h').value/SCALE);if(!w||!h)return;closeModal('modal-canvas');setCanvasSize(w,h,false);flash('Custom: '+(w*SCALE)+'×'+(h*SCALE));}
+function changePixelSize(v){if(spInRoom&&!spIsHost){flash('Only the room owner can change canvas size!');return;}SCALE=v;document.getElementById('pxv').textContent=v+'×';document.getElementById('sb-zoom').textContent='Pixel: '+v+'×';setCanvasSize(W,H,true);flash('Pixel size: '+v+'×');}
 
 // ══════════════════════════════════════════════════════════
 // WIGGLE
 // ══════════════════════════════════════════════════════════
-let wAmt=1.0,wSpeed=2.5,wigOn=true,snapMode=false,animT=0,phaseX=null,phaseY=null,snapDir=null;
-function buildPhases(){phaseX=new Float32Array(W*H);phaseY=new Float32Array(W*H);snapDir=new Uint8Array(W*H);for(let i=0;i<W*H;i++){phaseX[i]=Math.random()*Math.PI*2;phaseY[i]=Math.random()*Math.PI*2;snapDir[i]=Math.floor(Math.random()*4);}}
-function renderLoop(){animT+=0.016*wSpeed;if(wigOn&&wAmt>0)renderWiggle(animT);else renderFlat();renderOverlayLayer();requestAnimationFrame(renderLoop);}
+let wAmt=1.0,wSpeed=2.5,wigOn=true,snapMode=false,animT=0,phaseX=null,phaseY=null,phaseV=null,snapDir=null,wDensity=5;
+function buildPhases(){
+  phaseX=new Float32Array(W*H);phaseY=new Float32Array(W*H);phaseV=new Float32Array(W*H);snapDir=new Uint8Array(W*H);
+  for(let i=0;i<W*H;i++){phaseX[i]=Math.random()*Math.PI*2;phaseY[i]=Math.random()*Math.PI*2;phaseV[i]=Math.random()*Math.PI*2;snapDir[i]=Math.floor(Math.random()*4);}
+}
+function renderLoop(){animT+=0.016*wSpeed;if(wigOn&&wAmt>0)renderWiggle(animT);else renderFlat();if(lineWiggleOn)applyLineWiggleToScreen(animT);renderOverlayLayer();requestAnimationFrame(renderLoop);}
 function renderFlat(){const DW=W*SCALE,DH=H*SCALE;sCtx.clearRect(0,0,DW,DH);sCtx.imageSmoothingEnabled=false;sCtx.drawImage(dc,0,0,W,H,0,0,DW,DH);}
+// Post-pass: reads the already-rendered sCtx pixels and adds edge wiggle on top
+function applyLineWiggleToScreen(t){
+  const DW=W*SCALE,DH=H*SCALE;
+  const src=dCtx.getImageData(0,0,W,H).data;
+  const screenData=sCtx.getImageData(0,0,DW,DH);
+  const d=screenData.data;
+  applyLineWiggle(src,d,DW,DH,t);
+  sCtx.putImageData(screenData,0,0);
+}
 function renderWiggle(t){
-  const DW=W*SCALE,DH=H*SCALE;const src=dCtx.getImageData(0,0,W,H).data;const dst=sCtx.createImageData(DW,DH);const d=dst.data;
+  const DW=W*SCALE,DH=H*SCALE;
+  const src=dCtx.getImageData(0,0,W,H).data;
+  const dst=sCtx.createImageData(DW,DH);const d=dst.data;
   for(let i=0;i<d.length;i+=4){d[i]=255;d[i+1]=255;d[i+2]=255;d[i+3]=255;}
+  // Map density (0.1–10) to a sine threshold (-1 to ~1).
+  // sin(t + phaseV[pi]) > visThreshold decides if this pixel is visible this frame.
+  // density 0.1 → threshold ≈  0.98 → visible only ~2% of frames (almost all blank)
+  // density 5.0 → threshold =  0.00 → visible ~50% of frames
+  // density 10  → threshold = -1.00 → always visible (100%)
+  const visThreshold = 1 - 2 * (wDensity / 10);
+  const visFreq = 1.1; // visibility flicker speed, independent of movement
   for(let py=0;py<H;py++){for(let px=0;px<W;px++){
     const si=(py*W+px)*4;const r=src[si],g=src[si+1],b=src[si+2],a=src[si+3];
     if(a<10||(r>245&&g>245&&b>245))continue;
-    const pi=py*W+px;let ddx,ddy;
+    const pi=py*W+px;
+    // Visibility check — uses phaseV so it's independent of position wiggle
+    if(Math.sin(t*visFreq+phaseV[pi]) <= visThreshold) continue;
+    // Position wiggle
+    let ddx,ddy;
     if(snapMode){const sn=Math.floor(t+phaseX[pi])%2===0;if(!sn){ddx=0;ddy=0;}else{const dir=snapDir[pi];ddx=dir===0?1:dir===1?-1:0;ddy=dir===2?1:dir===3?-1:0;}}
     else{ddx=Math.sin(t+phaseX[pi])*wAmt;ddy=Math.sin(t*0.82+phaseY[pi])*wAmt;}
-    const dpx=Math.round(px*SCALE+ddx*SCALE),dpy=Math.round(py*SCALE+ddy*SCALE);
-    for(let sy=0;sy<SCALE;sy++)for(let sx=0;sx<SCALE;sx++){const dx2=dpx+sx,dy2=dpy+sy;if(dx2<0||dx2>=DW||dy2<0||dy2>=DH)continue;const di=(dy2*DW+dx2)*4;d[di]=r;d[di+1]=g;d[di+2]=b;d[di+3]=255;}
+    const bpx=Math.round(px*SCALE+ddx*SCALE),bpy=Math.round(py*SCALE+ddy*SCALE);
+    for(let sy=0;sy<SCALE;sy++)for(let sx=0;sx<SCALE;sx++){
+      const dx2=bpx+sx,dy2=bpy+sy;
+      if(dx2<0||dx2>=DW||dy2<0||dy2>=DH)continue;
+      const di=(dy2*DW+dx2)*4;d[di]=r;d[di+1]=g;d[di+2]=b;d[di+3]=255;
+    }
   }}
   sCtx.putImageData(dst,0,0);
 }
 function toggleWiggle(){wigOn=!wigOn;const el=document.getElementById('wiggle-rb');el.textContent=wigOn?'〰 Wiggle ON':'〰 Wiggle OFF';el.classList.toggle('on',wigOn);flash(wigOn?'Wiggle on':'Wiggle off');}
+function openNewsModal(){document.getElementById('news-modal').classList.add('show');}
+function closeNewsModal(){document.getElementById('news-modal').classList.remove('show');}
 function toggleSnap(){snapMode=!snapMode;const el=document.getElementById('snap-rb');el.textContent=snapMode?'⚡ Snap ON':'⚡ Snap OFF';el.classList.toggle('on',snapMode);flash(snapMode?'Snap on':'Snap off');}
 
-// ══════════════════════════════════════════════════════════
-// GRADIENT BG
-// ══════════════════════════════════════════════════════════
-function applyGradientBg(){
-  saveHistory();
-  // Pick 3-6 random colors, draw radial blobs at random positions
-  const colors=['#e53935','#fb8c00','#ffd600','#43a047','#00bcd4','#1565c0','#7b1fa2','#ff69b4','#ff5722','#009688','#3f51b5','#e91e63'];
-  const shuffled=colors.sort(()=>Math.random()-.5);
-  const numColors=3+Math.floor(Math.random()*4);
-  const tmp=document.createElement('canvas');tmp.width=W;tmp.height=H;
-  const tC=tmp.getContext('2d');
-  // Draw multiple radial gradients at random positions
-  for(let i=0;i<numColors;i++){
-    const cx=Math.random()*W,cy=Math.random()*H;
-    const r=Math.max(W,H)*(0.4+Math.random()*0.7);
-    const grad=tC.createRadialGradient(cx,cy,0,cx,cy,r);
-    grad.addColorStop(0,shuffled[i%shuffled.length]);
-    grad.addColorStop(1,'transparent');
-    tC.globalAlpha=0.55+Math.random()*0.45;
-    tC.fillStyle=grad;
-    tC.fillRect(0,0,W,H);
-  }
-  tC.globalAlpha=1;
-  // Composite: draw gradient under existing drawing
-  const existingData=dCtx.getImageData(0,0,W,H);
-  // First fill canvas with gradient
-  dCtx.drawImage(tmp,0,0);
-  // Re-draw existing non-white pixels on top
-  const gradData=dCtx.getImageData(0,0,W,H);
-  for(let i=0;i<existingData.data.length;i+=4){
-    const r=existingData.data[i],g=existingData.data[i+1],b=existingData.data[i+2],a=existingData.data[i+3];
-    if(a>10&&!(r>240&&g>240&&b>240)){gradData.data[i]=r;gradData.data[i+1]=g;gradData.data[i+2]=b;gradData.data[i+3]=a;}
-  }
-  dCtx.putImageData(gradData,0,0);
-  flash('Gradient background applied!');
-}
+let lineWiggleOn=false;
+function toggleLineWiggle(){lineWiggleOn=!lineWiggleOn;const el=document.getElementById('linewiggle-rb');el.textContent=lineWiggleOn?'〜 Line Wiggle ON':'〜 Line Wiggle OFF';el.classList.toggle('on',lineWiggleOn);flash(lineWiggleOn?'Line Wiggle on':'Line Wiggle off');}
 
-// ══════════════════════════════════════════════════════════
-// GRADIENT PANEL
-// ══════════════════════════════════════════════════════════
-let gradType='radial';
-let gradAngle=90;
-let gradStops=[
-  {color:'#e53935',pos:0},
-  {color:'#1565c0',pos:100}
-];
-
-function openGradPanel(){
-  renderGradStops();
-  updateGradPreview();
-  document.getElementById('grad-panel').classList.add('open');
-}
-function closeGradPanel(){document.getElementById('grad-panel').classList.remove('open');}
-
-function setGradType(t){
-  gradType=t;
-  document.querySelectorAll('.gp-type-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('gp-type-'+t).classList.add('on');
-  document.getElementById('gp-angle-section').style.display=t==='linear'?'block':'none';
-  document.getElementById('gp-colors-section').style.display=t==='random'?'none':'block';
-  updateGradPreview();
-}
-
-function updateGradAngle(v){
-  gradAngle=+v;
-  document.getElementById('gp-angle-val').textContent=v+'°';
-  // Arrow direction hint
-  const dirs=['→','↘','↓','↙','←','↖','↑','↗'];
-  document.getElementById('gp-angle-dir').textContent=dirs[Math.round(v/45)%8];
-  updateGradPreview();
-}
-
-function renderGradStops(){
-  const cont=document.getElementById('gp-stops');
-  cont.innerHTML='';
-  gradStops.forEach((stop,i)=>{
-    const row=document.createElement('div');
-    row.className='gp-stop-row';
-    const swEl=document.createElement('div');
-    swEl.className='gp-stop-swatch';
-    swEl.style.background=stop.color;
-    const inp=document.createElement('input');
-    inp.type='color';inp.value=stop.color;
-    inp.oninput=e=>{gradStops[i].color=e.target.value;swEl.style.background=e.target.value;updateGradPreview();};
-    swEl.appendChild(inp);
-    const posLbl=document.createElement('span');
-    posLbl.style.cssText='font-size:10px;color:#555;width:22px;flex-shrink:0;';
-    posLbl.textContent=stop.pos+'%';
-    const posSl=document.createElement('input');
-    posSl.type='range';posSl.min=0;posSl.max=100;posSl.value=stop.pos;
-    posSl.className='gp-stop-pos gp-angle-sl';
-    posSl.oninput=e=>{gradStops[i].pos=+e.target.value;posLbl.textContent=e.target.value+'%';updateGradPreview();};
-    const del=document.createElement('div');
-    del.className='gp-stop-del';del.textContent='×';
-    del.onclick=()=>{if(gradStops.length>2)gradStops.splice(i,1);renderGradStops();updateGradPreview();};
-    row.appendChild(swEl);row.appendChild(posSl);row.appendChild(posLbl);row.appendChild(del);
-    cont.appendChild(row);
-  });
-}
-
-function addGradStop(){
-  gradStops.push({color:'#'+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,'0'),pos:Math.round(Math.random()*100)});
-  gradStops.sort((a,b)=>a.pos-b.pos);
-  renderGradStops();updateGradPreview();
-}
-
-function updateGradPreview(){
-  const cv=document.getElementById('gp-preview');
-  if(!cv)return;
-  cv.width=cv.offsetWidth||280;cv.height=60;
-  const ctx=cv.getContext('2d');
-  const sorted=[...gradStops].sort((a,b)=>a.pos-b.pos);
-  if(gradType==='random'){
-    // Draw random-style preview
-    const colors=['#e53935','#fb8c00','#ffd600','#43a047','#00bcd4','#1565c0','#7b1fa2','#ff69b4'];
-    for(let i=0;i<5;i++){
-      const cx=Math.random()*cv.width,cy=Math.random()*cv.height;
-      const r=cv.width*(0.4+Math.random()*0.5);
-      const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
-      g.addColorStop(0,colors[Math.floor(Math.random()*colors.length)]);
-      g.addColorStop(1,'transparent');
-      ctx.globalAlpha=0.6+Math.random()*0.4;ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
+// ──────────────────────────────────────────────────────────
+// LINE WIGGLE — animates the outer edges of drawn strokes by
+// expanding/contracting the boundary pixels using a sine wave.
+// Only edge pixels (those with at least one white neighbor) are
+// affected; interior pixels stay in place.
+// ──────────────────────────────────────────────────────────
+function applyLineWiggle(src, d, DW, DH, t){
+  // Identify edge pixels in the source draw buffer
+  // An edge pixel is non-white with at least one white 4-neighbor
+  const isWhiteSrc=(x,y)=>{
+    if(x<0||x>=W||y<0||y>=H) return true;
+    const i=(y*W+x)*4;
+    return src[i]>245&&src[i+1]>245&&src[i+2]>245;
+  };
+  // Amount of expansion oscillates per pixel via its phase
+  // Max spread in screen pixels = ~SCALE * 0.7
+  const maxSpread=Math.max(1, SCALE * 0.75);
+  for(let py=0;py<H;py++){for(let px=0;px<W;px++){
+    const si=(py*W+px)*4;
+    const r=src[si],g=src[si+1],b=src[si+2],a=src[si+3];
+    if(a<10||(r>245&&g>245&&b>245)) continue;
+    // Only process edge pixels
+    const isEdge=isWhiteSrc(px-1,py)||isWhiteSrc(px+1,py)||isWhiteSrc(px,py-1)||isWhiteSrc(px,py+1);
+    if(!isEdge) continue;
+    const pi=py*W+px;
+    // Oscillate between -maxSpread and +maxSpread, unique phase per pixel
+    const spread=Math.sin(t*1.3+phaseX[pi])*maxSpread;
+    if(spread<=0) continue; // shrink phase: pixel already drawn at normal size, skip extra
+    const iSpread=Math.round(spread);
+    // Stamp extra pixels outward from this edge pixel's normal position
+    const bpx=px*SCALE, bpy=py*SCALE;
+    for(let sy=-iSpread;sy<SCALE+iSpread;sy++){
+      for(let sx=-iSpread;sx<SCALE+iSpread;sx++){
+        // Only paint the border ring, not the interior (interior already painted)
+        if(sx>=0&&sx<SCALE&&sy>=0&&sy<SCALE) continue;
+        const dx2=bpx+sx, dy2=bpy+sy;
+        if(dx2<0||dx2>=DW||dy2<0||dy2>=DH) continue;
+        const di=(dy2*DW+dx2)*4;
+        // Only overwrite white pixels (don't trample existing drawn pixels)
+        if(d[di]<245||d[di+1]<245||d[di+2]<245) continue;
+        d[di]=r;d[di+1]=g;d[di+2]=b;d[di+3]=255;
+      }
     }
-    ctx.globalAlpha=1;
-  } else if(gradType==='radial'){
-    const g=ctx.createRadialGradient(cv.width/2,cv.height/2,0,cv.width/2,cv.height/2,cv.width/2);
-    sorted.forEach(s=>g.addColorStop(s.pos/100,s.color));
-    ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
-  } else {
-    const rad=gradAngle*Math.PI/180;
-    const x1=cv.width/2-Math.cos(rad)*cv.width/2,y1=cv.height/2-Math.sin(rad)*cv.height/2;
-    const x2=cv.width/2+Math.cos(rad)*cv.width/2,y2=cv.height/2+Math.sin(rad)*cv.height/2;
-    const g=ctx.createLinearGradient(x1,y1,x2,y2);
-    sorted.forEach(s=>g.addColorStop(s.pos/100,s.color));
-    ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
-  }
-}
-
-function randomizeGrad(){
-  const palette=['#e53935','#fb8c00','#ffd600','#43a047','#00bcd4','#1565c0','#7b1fa2','#ff69b4','#ff5722','#009688','#3f51b5','#e91e63','#0097a7','#558b2f','#f57f17'];
-  palette.sort(()=>Math.random()-.5);
-  const n=2+Math.floor(Math.random()*3);
-  gradStops=[];
-  for(let i=0;i<n;i++) gradStops.push({color:palette[i],pos:Math.round(i/(n-1)*100)});
-  if(gradType==='linear') gradAngle=Math.round(Math.random()*360);
-  const slider=document.getElementById('gp-angle');
-  if(slider){slider.value=gradAngle;updateGradAngle(gradAngle);}
-  renderGradStops();updateGradPreview();
-}
-
-function applyGradPanel(){
-  saveHistory();
-  const sorted=[...gradStops].sort((a,b)=>a.pos-b.pos);
-  const tmp=document.createElement('canvas');tmp.width=W;tmp.height=H;
-  const tC=tmp.getContext('2d');
-  if(gradType==='random'){
-    const colors=['#e53935','#fb8c00','#ffd600','#43a047','#00bcd4','#1565c0','#7b1fa2','#ff69b4','#ff5722','#009688','#3f51b5','#e91e63'];
-    colors.sort(()=>Math.random()-.5);
-    const n=3+Math.floor(Math.random()*4);
-    for(let i=0;i<n;i++){
-      const cx=Math.random()*W,cy=Math.random()*H;
-      const r=Math.max(W,H)*(0.4+Math.random()*0.7);
-      const grad=tC.createRadialGradient(cx,cy,0,cx,cy,r);
-      grad.addColorStop(0,colors[i%colors.length]);
-      grad.addColorStop(1,'transparent');
-      tC.globalAlpha=0.55+Math.random()*0.45;
-      tC.fillStyle=grad;tC.fillRect(0,0,W,H);
-    }
-    tC.globalAlpha=1;
-  } else if(gradType==='radial'){
-    const grad=tC.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)/1.4);
-    sorted.forEach(s=>grad.addColorStop(s.pos/100,s.color));
-    tC.fillStyle=grad;tC.fillRect(0,0,W,H);
-  } else {
-    const rad=gradAngle*Math.PI/180;
-    const x1=W/2-Math.cos(rad)*W,y1=H/2-Math.sin(rad)*H;
-    const x2=W/2+Math.cos(rad)*W,y2=H/2+Math.sin(rad)*H;
-    const grad=tC.createLinearGradient(x1,y1,x2,y2);
-    sorted.forEach(s=>grad.addColorStop(s.pos/100,s.color));
-    tC.fillStyle=grad;tC.fillRect(0,0,W,H);
-  }
-  // Composite: keep existing non-white drawing on top
-  const existingData=dCtx.getImageData(0,0,W,H);
-  dCtx.drawImage(tmp,0,0);
-  const gradData=dCtx.getImageData(0,0,W,H);
-  for(let i=0;i<existingData.data.length;i+=4){
-    const r=existingData.data[i],g=existingData.data[i+1],b=existingData.data[i+2],a=existingData.data[i+3];
-    if(a>10&&!(r>240&&g>240&&b>240)){gradData.data[i]=r;gradData.data[i+1]=g;gradData.data[i+2]=b;gradData.data[i+3]=a;}
-  }
-  dCtx.putImageData(gradData,0,0);
-  closeGradPanel();
-  flash('Gradient applied!');
+  }}
 }
 
 
@@ -1113,6 +1037,7 @@ function stringHandleClick(p, eHeld){
     stringActiveStart = newId;
     flash('Node placed');
   }
+  spBroadcastStringState();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1236,20 +1161,38 @@ function onDown(e){
     if(stringEdges.length>0){
       const filled=fillStringLoop(p.x,p.y);
       painting=false;
-      if(!filled) floodFill(p.x,p.y,null); // fallback to normal fill if outside edges
+      if(filled){
+        // Broadcast fill WITH string state so remotes replicate correctly
+        const msg={type:'fill',x:p.x,y:p.y,clr:color,nodes:stringNodes.map(n=>({...n})),edges:stringEdges.map(e=>({...e}))};
+        broadcastToPeers(msg);
+        if(!spIsHost&&spConnections[0])try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(ex){}
+      } else {
+        floodFill(p.x,p.y,null);
+        const msg={type:'fill',x:p.x,y:p.y,clr:color,nodes:[],edges:[]};
+        broadcastToPeers(msg);
+        if(!spIsHost&&spConnections[0])try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(ex){}
+      }
       return;
     }
-    floodFill(p.x,p.y,null);painting=false;return;
+    floodFill(p.x,p.y,null);painting=false;
+    const msg={type:'fill',x:p.x,y:p.y,clr:color,nodes:[],edges:[]};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0])try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(ex){}
+    return;
   }
   snap_=dCtx.getImageData(0,0,W,H);
   applyStyle(tool==='eraser');dCtx.lineWidth=sw();
-  if(['pen','marker','brush','eraser'].includes(tool)){dCtx.beginPath();dCtx.arc(p.x,p.y,sw()/2,0,Math.PI*2);dCtx.fill();dCtx.beginPath();dCtx.moveTo(p.x,p.y);}
+  if(['pen','marker','brush','eraser'].includes(tool)){
+    dCtx.beginPath();dCtx.arc(p.x,p.y,sw()/2,0,Math.PI*2);dCtx.fill();dCtx.beginPath();dCtx.moveTo(p.x,p.y);
+    spBroadcastPoint('down',p.x,p.y);
+  }
 }
 
 function onMove(e){
   e.preventDefault();
   const p=gpos(e);
   document.getElementById('sb-pos').textContent=p.x+', '+p.y;
+  spBroadcastCursor(p.x, p.y);
 
   if(tool==='string'){
     stringHoverPos=p;
@@ -1279,14 +1222,15 @@ function onMove(e){
       const curAngle=Math.atan2(p.y-cy,p.x-cx);
       selRotAngle=rotOrigAngle+(curAngle-rotStartAngle);
     }
+    spBroadcastGrabState();
     return;
   }
 
   if(!painting)return;
   applyStyle(tool==='eraser');dCtx.lineWidth=sw();
-  if(tool==='pen'){const mx=(lastX+p.x)/2,my=(lastY+p.y)/2;dCtx.quadraticCurveTo(lastX,lastY,mx,my);dCtx.stroke();dCtx.beginPath();dCtx.moveTo(mx,my);}
-  else if(['marker','brush','eraser'].includes(tool)){if(tool==='brush')dCtx.globalAlpha=Math.min(bOp,0.45);if(tool==='marker')dCtx.globalAlpha=Math.min(bOp,0.85);dCtx.lineTo(p.x,p.y);dCtx.stroke();dCtx.beginPath();dCtx.moveTo(p.x,p.y);}
-  else if(tool==='spray'){const rad=bSz*2.5,den=Math.max(10,bSz*4);dCtx.globalAlpha=bOp*0.08;dCtx.fillStyle=color;for(let i=0;i<den;i++){const a=Math.random()*Math.PI*2,r=Math.random()*rad;dCtx.fillRect(Math.round(p.x+r*Math.cos(a)),Math.round(p.y+r*Math.sin(a)),1,1);}}
+  if(tool==='pen'){const mx=(lastX+p.x)/2,my=(lastY+p.y)/2;dCtx.quadraticCurveTo(lastX,lastY,mx,my);dCtx.stroke();dCtx.beginPath();dCtx.moveTo(mx,my);spBroadcastPoint('move',p.x,p.y);}
+  else if(['marker','brush','eraser'].includes(tool)){if(tool==='brush')dCtx.globalAlpha=Math.min(bOp,0.45);if(tool==='marker')dCtx.globalAlpha=Math.min(bOp,0.85);dCtx.lineTo(p.x,p.y);dCtx.stroke();dCtx.beginPath();dCtx.moveTo(p.x,p.y);spBroadcastPoint('move',p.x,p.y);}
+  else if(tool==='spray'){const rad=bSz*2.5,den=Math.max(10,bSz*4);dCtx.globalAlpha=bOp*0.08;dCtx.fillStyle=color;const dots=[];for(let i=0;i<den;i++){const a=Math.random()*Math.PI*2,r=Math.random()*rad;const sx=Math.round(p.x+r*Math.cos(a)),sy=Math.round(p.y+r*Math.sin(a));dCtx.fillRect(sx,sy,1,1);dots.push({x:sx,y:sy});}spBroadcastPoint('spray',p.x,p.y,{dots});}
   else if(['line','rect','circle'].includes(tool)){if(!snap_)return;dCtx.putImageData(snap_,0,0);applyStyle(false);dCtx.lineWidth=bSz;dCtx.beginPath();if(tool==='line'){dCtx.moveTo(startX,startY);dCtx.lineTo(p.x,p.y);dCtx.stroke();}else if(tool==='rect'){dCtx.strokeRect(startX,startY,p.x-startX,p.y-startY);}else{const rx=Math.abs(p.x-startX)/2,ry=Math.abs(p.y-startY)/2;dCtx.ellipse(startX+(p.x-startX)/2,startY+(p.y-startY)/2,rx,ry,0,0,Math.PI*2);dCtx.stroke();}}
   lastX=p.x;lastY=p.y;
 }
@@ -1295,29 +1239,38 @@ function onUp(e){
   if(tool==='string'){
     if(stringDragNodeId!==null){
       if(!stringDragging){
-        // Was a click (not drag) — handle as connect/extend
-        // If E held OR the node has connections already → treat as connect
         stringHandleClick(gpos(e), eKeyHeld);
       }
-      // Reset drag state
       stringDragNodeId=null;
       stringDragging=false;
       stringMouseDownPt=null;
       hc.style.cursor=stringHoverNodeId!==null?'grab':'crosshair';
     }
+    // Broadcast string state whenever we finish any string interaction
+    spBroadcastStringState();
     return;
   }
   if(!painting){painting=false;return;}
-  painting=false;dCtx.globalAlpha=1;snap_=null;
+  painting=false;dCtx.globalAlpha=1;
   if(tool==='grab'){
     if(grabMode==='rect'){
       const x1=Math.min(startX,lastX),y1=Math.min(startY,lastY);
       const x2=Math.max(startX,lastX),y2=Math.max(startY,lastY);
       if(x2-x1>2&&y2-y1>2)finalizeSelection(x1,y1,x2-x1,y2-y1);
       else lCtx.clearRect(0,0,W*SCALE,H*SCALE);
+      spBroadcastGrabState('none');
     }
-    grabMode=null;hc.style.cursor='grab';return;
+    grabMode=null;hc.style.cursor='grab';snap_=null;return;
   }
+  // Broadcast stroke end
+  spBroadcastPoint('up',lastX,lastY);
+  // For shape tools, send final shape as single atomic message
+  if(['line','rect','circle'].includes(tool)){
+    const msg={type:'strokes',strokes:[{t:tool,x0:startX,y0:startY,x:lastX,y:lastY,clr:color,sz:bSz,op:bOp}]};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0])try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(ex){}
+  }
+  snap_=null;
 }
 
 hc.addEventListener('mousedown',onDown);
@@ -1405,10 +1358,10 @@ function drawGrabOverlay(){
   } else if(sel.active){
     const bx=sel.floatX*SCALE,by=sel.floatY*SCALE,bw=sel.rect.w*SCALE,bh=sel.rect.h*SCALE;
     const cx=bx+bw/2,cy=by+bh/2;
-    // Draw float image with rotation
+    // Draw float image with rotation — use clearRect so alpha is respected
     if(sel.floatImg){
       const tmp=document.createElement('canvas');tmp.width=sel.rect.w;tmp.height=sel.rect.h;
-      tmp.getContext('2d').putImageData(sel.floatImg,0,0);
+      const tCtx=tmp.getContext('2d');tCtx.clearRect(0,0,tmp.width,tmp.height);tCtx.putImageData(sel.floatImg,0,0);
       lCtx.save();
       lCtx.translate(cx,cy);lCtx.rotate(selRotAngle);lCtx.translate(-bw/2,-bh/2);
       lCtx.imageSmoothingEnabled=false;
@@ -1468,10 +1421,9 @@ function drawGrabOverlay(){
 
 function renderOverlayLayer(){
   dashOffset=(dashOffset+0.4)%20;
-  // Clear and draw string layer + grab overlay
   lCtx.clearRect(0,0,W*SCALE,H*SCALE);
   drawGrabOverlay();
-  // Draw string nodes/edges on top
+  drawRemoteOverlays();
   if(stringNodes.length>0)drawStringLayer();
 }
 
@@ -1484,14 +1436,16 @@ function finalizeSelection(rx,ry,rw,rh){
   for(let fy=0;fy<rh;fy++)for(let fx=0;fx<rw;fx++){
     const sx=rx+fx,sy=ry+fy;if(sx<0||sx>=W||sy<0||sy>=H)continue;
     const si=(sy*W+sx)*4,di=(fy*rw+fx)*4;
-    floatImg.data[di]=srcData.data[si];floatImg.data[di+1]=srcData.data[si+1];
-    floatImg.data[di+2]=srcData.data[si+2];floatImg.data[di+3]=srcData.data[si+3];
-    srcData.data[si]=255;srcData.data[si+1]=255;srcData.data[si+2]=255;srcData.data[si+3]=255;
+    const r=srcData.data[si],g=srcData.data[si+1],b=srcData.data[si+2],a=srcData.data[si+3];
+    const isBg=(a<10)||(r>240&&g>240&&b>240);
+    floatImg.data[di]=r;floatImg.data[di+1]=g;floatImg.data[di+2]=b;floatImg.data[di+3]=isBg?0:a;
+    if(!isBg){srcData.data[si]=255;srcData.data[si+1]=255;srcData.data[si+2]=255;srcData.data[si+3]=255;}
   }
   dCtx.putImageData(srcData,0,0);
   sel.floatImg=floatImg;sel.rect={x:rx,y:ry,w:rw,h:rh};
   sel.floatX=rx;sel.floatY=ry;sel.active=true;selRotAngle=0;
   resizeOrigRect={...sel.rect};resizeOrigImg=floatImg;
+  spBroadcastCanvasSnap();
   flash('Selected — drag to move, handles to resize, Esc to stamp');
 }
 
@@ -1499,7 +1453,7 @@ function commitSelection(){
   if(!sel.active)return;
   if(sel.floatImg){
     const tmp=document.createElement('canvas');tmp.width=sel.rect.w;tmp.height=sel.rect.h;
-    tmp.getContext('2d').putImageData(sel.floatImg,0,0);
+    const tCtx=tmp.getContext('2d');tCtx.clearRect(0,0,tmp.width,tmp.height);tCtx.putImageData(sel.floatImg,0,0);
     dCtx.save();dCtx.imageSmoothingEnabled=false;
     const cx=sel.floatX+sel.rect.w/2,cy=sel.floatY+sel.rect.h/2;
     dCtx.translate(cx,cy);dCtx.rotate(selRotAngle);dCtx.translate(-sel.rect.w/2,-sel.rect.h/2);
@@ -1507,6 +1461,8 @@ function commitSelection(){
     dCtx.restore();
   }
   sel.active=false;sel.floatImg=null;resizeOrigRect=null;resizeOrigImg=null;selRotAngle=0;
+  spBroadcastCanvasSnap();
+  spBroadcastGrabState('none');
 }
 
 function deleteSelection(){if(!sel.active)return;sel.active=false;sel.floatImg=null;flash('Selection deleted');}
@@ -1532,7 +1488,22 @@ let textX=0,textY=0;
 const textOverlay=document.getElementById('text-overlay'),textInputEl=document.getElementById('text-input-el');
 function updateTextInputStyle(){const fs=txtSize*SCALE;textInputEl.style.fontSize=fs+'px';textInputEl.style.fontFamily=`'${txtFont}',sans-serif`;textInputEl.style.color=color;textInputEl.style.minWidth='40px';textInputEl.style.lineHeight='1.2';}
 function placeTextOverlay(drawX,drawY){textX=drawX;textY=drawY;updateTextInputStyle();textOverlay.style.left=(drawX*SCALE)+'px';textOverlay.style.top=(drawY*SCALE-txtSize*SCALE*0.1)+'px';textOverlay.style.display='block';textInputEl.textContent='';textInputEl.focus();}
-function stampText(){const txt=textInputEl.textContent.trim();if(txt){saveHistory();dCtx.save();dCtx.globalAlpha=bOp;dCtx.fillStyle=color;dCtx.font=`${txtSize}px '${txtFont}',sans-serif`;dCtx.textBaseline='top';dCtx.fillText(txt,textX,textY);dCtx.restore();flash('Text stamped!');}hideTextOverlay(true);}
+function stampText(){
+  const txt=textInputEl.textContent.trim();
+  if(txt){
+    saveHistory();
+    dCtx.save();dCtx.globalAlpha=bOp;dCtx.fillStyle=color;
+    dCtx.font=`${txtSize}px '${txtFont}',sans-serif`;dCtx.textBaseline='top';
+    dCtx.fillText(txt,textX,textY);dCtx.restore();
+    flash('Text stamped!');
+    if(spInRoom){
+      const msg={type:'text-stamp',x:textX,y:textY,txt,font:txtFont,size:txtSize,clr:color,op:bOp};
+      broadcastToPeers(msg);
+      if(!spIsHost&&spConnections[0])try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(ex){}
+    }
+  }
+  hideTextOverlay(true);
+}
 function hideTextOverlay(clear){textOverlay.style.display='none';if(clear)textInputEl.textContent='';}
 function setTextFont(el){document.querySelectorAll('.font-opt,.tb-font-opt').forEach(e=>e.classList.remove('on'));const f=el.dataset.font;txtFont=f;document.querySelectorAll(`[data-font="${f}"]`).forEach(e=>e.classList.add('on'));updateTextInputStyle();textInputEl.focus();}
 textInputEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();stampText();}if(e.key==='Escape')hideTextOverlay(true);e.stopPropagation();});
@@ -1561,7 +1532,8 @@ function floodFill(x,y,loopMask){
     if(cx>0)stack.push(i-1);if(cx<W-1)stack.push(i+1);
     if(cy>0)stack.push(i-W);if(cy<H-1)stack.push(i+W);
   }
-  dCtx.putImageData(id,0,0);flash('Filled');
+  dCtx.putImageData(id,0,0);
+  flash('Filled');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1575,12 +1547,15 @@ function redo(){if(!redoStack.length){flash('Nothing to redo');return;}history.p
 // OBLITERATE
 // ══════════════════════════════════════════════════════════
 function obliterate(){
+  if(spInRoom && !spIsHost){ flash('Only the room owner can Obliterate!'); return; }
+  if(spInRoom){ broadcastToPeers({type:'obliterate'}); }
   saveHistory();const src=dCtx.getImageData(0,0,W,H).data;const DW=W*SCALE,DH=H*SCALE;const pts=[];
   const step=Math.max(1,Math.floor(W/80));
   for(let py=0;py<H;py+=step)for(let px=0;px<W;px+=step){const i=(py*W+px)*4;const r=src[i],g=src[i+1],b=src[i+2],a=src[i+3];if(a<50||(r>240&&g>240&&b>240))continue;const cx=DW/2,cy=DH/2,sx=px*SCALE,sy=py*SCALE;const dx=sx-cx,dy=sy-cy,dist=Math.sqrt(dx*dx+dy*dy)||1;const spd=3+Math.random()*9;pts.push({x:sx,y:sy,vx:(dx/dist)*spd*(0.4+Math.random()),vy:(dy/dist)*spd*(0.4+Math.random())-Math.random()*5,grav:.18+Math.random()*.18,size:SCALE+Math.random()*SCALE*2.5,col:`rgb(${r},${g},${b})`,alpha:1,rot:Math.random()*6.28,rotV:(Math.random()-.5)*.4});}
   const bright=['#ff2200','#ff8800','#ffee00','#fff','#ff69b4','#00ffcc'];
   for(let i=0;i<100;i++){const a=Math.random()*6.28,spd=5+Math.random()*14;pts.push({x:DW/2+(Math.random()-.5)*DW*.25,y:DH/2+(Math.random()-.5)*DH*.25,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd-5,grav:.22+Math.random()*.2,size:3+Math.random()*8,col:bright[Math.floor(Math.random()*bright.length)],alpha:1,rot:0,rotV:(Math.random()-.5)*.6});}
-  dCtx.fillStyle='#fff';dCtx.fillRect(0,0,W,H);ec.style.display='block';let frame=0;const FRAMES=65;
+  dCtx.fillStyle='#fff';dCtx.fillRect(0,0,W,H);
+  ec.style.display='block';let frame=0;const FRAMES=65;
   function boom(){frame++;eCtx.clearRect(0,0,DW,DH);if(frame<8){eCtx.fillStyle=`rgba(255,255,200,${(1-frame/8)*.95})`;eCtx.fillRect(0,0,DW,DH);}for(let r=0;r<3;r++){const rf=frame-r*5;if(rf<0||rf>28)continue;eCtx.save();eCtx.strokeStyle=`rgba(255,160,0,${(1-rf/28)*.85})`;eCtx.lineWidth=6-rf*.18;eCtx.beginPath();eCtx.arc(DW/2,DH/2,rf*22,0,Math.PI*2);eCtx.stroke();eCtx.restore();}
   for(const p of pts){p.x+=p.vx;p.y+=p.vy;p.vy+=p.grav;p.vx*=.97;p.rot+=p.rotV;p.alpha=Math.max(0,1-frame/FRAMES);if(p.alpha<=0)continue;eCtx.save();eCtx.globalAlpha=p.alpha;eCtx.translate(p.x,p.y);eCtx.rotate(p.rot);eCtx.fillStyle=p.col;if(p.size<7)eCtx.fillRect(-p.size/2,-p.size/2,p.size,p.size);else{eCtx.beginPath();eCtx.arc(0,0,p.size/2,0,Math.PI*2);eCtx.fill();}eCtx.restore();}
   if(frame<FRAMES)requestAnimationFrame(boom);else{eCtx.clearRect(0,0,DW,DH);ec.style.display='none';flash('Obliterated!');}}
@@ -1654,8 +1629,9 @@ const GUIDE_SLIDES=[
   {title:'Welcome to Wiggly Paint',text:`Wiggly Paint — your drawings come alive with animated wiggle!<br><br>Use tools on the left sidebar or ribbon up top. Click <b>Next</b> for a tour.`},
   {title:'String / Node Tool 🔴',text:`The <b>String tool</b> is the new shape maker:<br><br>&bull; <b>Click empty space</b> to place a node (blue dot)<br>&bull; <b>Click another node</b> to draw a string edge between them<br>&bull; <b>Drag a node</b> to reposition it — strings follow along<br>&bull; Nodes persist when you switch tools!<br>&bull; When loop is <b>sealed (closed)</b>, use the <b>Fill tool</b> to paint inside<br>&bull; Fill respects existing drawn content around it`},
   {title:'Grab Tool & Resize',text:`The <b>Grab tool</b> selects a rectangle of pixels:<br><br>&bull; <b>Drag</b> to draw selection — preview shows blue dashed outline while dragging<br>&bull; After release: <b>8 resize handles</b> appear at corners and edges<br>&bull; Drag handles to stretch/shrink the selection<br>&bull; <b>Drag inside</b> to move it<br>&bull; <b>Esc</b> stamps it back, <b>Delete</b> removes it`},
-  {title:'Gradient Background 🎨',text:`In the <b>Colors section</b> of the ribbon, click <b>🎨 Gradient BG</b>:<br><br>&bull; Generates a unique random multi-color gradient<br>&bull; Colors splashed at random positions and sizes<br>&bull; Your existing drawing stays on top!<br>&bull; Works great with the Fill and String tools`},
-  {title:'Wiggle & Export',text:`Everything wiggles in real time!<br><br>&bull; <b>View tab</b> → Px Move, Speed, Snap controls<br>&bull; <b>Save GIF</b> exports an animated wiggly GIF<br>&bull; <b>Obliterate</b> explodes your art dramatically<br><br>Go make something wiggly! 🎉`}
+  {title:'Wiggle Modes ✨',text:`Three wiggle modes to mix and match:<br><br>&bull; <b>〰 Wiggle</b> — pixels jitter around their drawn position in real time<br>&bull; <b>⚡ Snap</b> — pixels snap to discrete offsets instead of smooth waves<br>&bull; <b>〜 Line Wiggle</b> — the outer <i>edges</i> of your strokes expand and contract, making lines feel alive and breathing<br><br>You can combine Wiggle + Line Wiggle for a double-whammy effect! 🎉`},
+  {title:'Density & Pixels 🎛',text:`The <b>Density</b> slider controls how filled your drawings look in real time:<br><br>&bull; <b>0.1</b> — almost completely invisible, just a few flickering pixels<br>&bull; <b>5.0</b> — roughly half the pixels visible at any moment<br>&bull; <b>20.0</b> — nearly fully solid<br><br>Because each pixel has its own random phase, they shimmer in and out independently — not all at once. Affects every pixel on the canvas live!`},
+  {title:'Wiggle & Export',text:`Everything wiggles in real time!<br><br>&bull; <b>View tab</b> → Px Move, Speed, Density, Snap controls<br>&bull; <b>Save GIF</b> exports an animated wiggly GIF<br>&bull; <b>Obliterate</b> explodes your art dramatically<br><br>Go make something wiggly! 🎉`}
 ];
 let guideSlide=0;
 async function fetchGrugGif(){const grugImg=document.getElementById('grug-gif');const grugLoad=document.getElementById('grug-loading');try{const res=await fetch(`https://api.tenor.com/v1/search?q=grug+caveman&key=LIVDSRZULELA&limit=20&media_filter=minimal`);const data=await res.json();if(data.results&&data.results.length>0){const pick=data.results[Math.floor(Math.random()*data.results.length)];const url=pick.media[0].gif.url||pick.media[0].tinygif.url;grugImg.src=url;grugImg.onload=()=>{grugLoad.style.display='none';grugImg.style.display='block';};grugImg.onerror=()=>{grugLoad.textContent='grug not found';};}else grugLoad.textContent='grug\nnot found';}catch(e){grugLoad.textContent='grug\nnot found';}}
@@ -1680,6 +1656,7 @@ document.addEventListener('keydown',e=>{
       stringEdges=stringEdges.filter(ed=>ed.a!==delId&&ed.b!==delId);
       if(stringActiveStart===delId) stringActiveStart=null;
       flash('Node deleted');
+      spBroadcastStringState();
       return;
     }
   }
@@ -1801,7 +1778,7 @@ function fsRename(id, e){
 }
 
 function updateFileTitle(name){
-  document.getElementById('title-text').textContent='Wiggly Paint — '+name;
+  // Title always stays "Wiggly Paint"
 }
 
 function toggleFilesDropdown(){
@@ -1922,159 +1899,1032 @@ hc.addEventListener('touchend',()=>{ setTimeout(()=>scheduleAutoSave(),100); });
 })();
 </script>
 
-<!-- PANEL DIALOG — MS Paint style floating window -->
-<div id="panel-dialog">
-  <div id="pd-titlebar">
-    <div id="pd-title-left">
-      <div id="pd-icon"></div>
-      <span>Wiggly Panel</span>
+<!-- ACCOUNT MODAL -->
+<div id="acct-overlay">
+  <div id="acct-box">
+    <div id="acct-titlebar">
+      <span>👤 Wiggly Account</span>
+      <span style="cursor:pointer;opacity:.8;font-size:13px;" onclick="closeAccountModal()">✕</span>
     </div>
-    <div id="pd-winbtns">
-      <div id="pd-close-btn" onclick="closePanel()" title="Close">✕</div>
-    </div>
-  </div>
-  <div id="pd-body">
-    <!-- LOCK -->
-    <div id="pd-lock">
-      <div class="pd-sunken">To access panel, please enter the correct code.</div>
-      <div id="pd-code-row">
-        <label id="pd-code-label" for="pd-code-inp">Code:</label>
-        <input id="pd-code-inp" type="password" placeholder="Enter code..." autocomplete="off">
-        <button class="pd-btn" onclick="tryUnlock()">OK</button>
+    <!-- Logged-in view -->
+    <div id="acct-logged-in">
+      <div class="acct-user-row">
+        <div class="acct-avatar" id="acct-avatar-letter" onclick="document.getElementById('acct-pfp-upload').click()" style="cursor:pointer;" title="Click to change profile picture">?</div>
+        <div>
+          <div class="acct-username-display" id="acct-display-name">—</div>
+          <div class="acct-joined-date" id="acct-display-joined">Joined —</div>
+          <div class="acct-pfp-btn" onclick="document.getElementById('acct-pfp-upload').click()">📷 Change Picture</div>
+          <input type="file" id="acct-pfp-upload" accept="image/*" onchange="acctUploadPfp(this)">
+        </div>
       </div>
-      <div id="pd-code-err"></div>
-    </div>
-    <!-- INTERIOR -->
-    <div id="pd-interior">
-      <div class="pd-sunken" style="color:#006600;font-size:10px;">🔓 Access granted — Grug approves.</div>
-      <div style="font-weight:700;color:#000;font-size:11px;">📢 Broadcast Message</div>
-      <div id="pd-shout-row">
-        <input id="pd-shout-inp" type="text" placeholder="Type message... (Enter to send)" maxlength="200">
-        <button class="pd-btn" id="pd-shout-btn" onclick="sendShout()">SHOUT</button>
+      <div style="font-size:11px;color:#555;background:#fff;border:1px solid #ccc;padding:8px;">
+        You're signed in and ready to join Social Drawing rooms!
       </div>
-      <div id="pd-shout-status"></div>
-      <div id="pd-footer">
-        <button class="pd-btn" onclick="lockOut()">🔒 Lock</button>
-        <button class="pd-btn" onclick="closePanel()">Close</button>
+      <div style="display:flex;justify-content:space-between;gap:8px;">
+        <button class="acct-btn" onclick="acctLogout()" style="color:#c00;">🚪 Log Out</button>
+        <button class="acct-btn primary" onclick="closeAccountModal()">Close</button>
+      </div>
+    </div>
+    <!-- Auth tabs (create / login) -->
+    <div id="acct-auth-ui">
+      <div id="acct-tabs">
+        <div class="acct-tab active" id="acct-tab-create" onclick="acctSwitchTab('create')">Create Account</div>
+        <div class="acct-tab" id="acct-tab-login" onclick="acctSwitchTab('login')">Log In</div>
+      </div>
+      <!-- CREATE -->
+      <div id="acct-page-create">
+        <div id="acct-body">
+          <div class="acct-field">
+            <label for="acct-create-user">Username</label>
+            <input class="acct-inp" id="acct-create-user" type="text" maxlength="14" placeholder="3–14 characters" autocomplete="off" oninput="acctValidateUsername(this)">
+            <div class="acct-hint">3–14 characters, letters/numbers/underscores only. No profanity.</div>
+          </div>
+          <div class="acct-field">
+            <label for="acct-create-pw">Password</label>
+            <input class="acct-inp" id="acct-create-pw" type="password" maxlength="16" placeholder="8–16 characters" autocomplete="new-password" oninput="acctValidatePw(this)">
+            <div class="acct-hint">8–16 characters.</div>
+          </div>
+          <div class="acct-field">
+            <label for="acct-create-pw2">Confirm Password</label>
+            <input class="acct-inp" id="acct-create-pw2" type="password" maxlength="16" placeholder="Repeat password" autocomplete="new-password">
+          </div>
+          <div class="acct-err" id="acct-create-err"></div>
+          <div class="acct-footer">
+            <button class="acct-btn" onclick="closeAccountModal()">Cancel</button>
+            <button class="acct-btn primary" onclick="acctCreate()">Create Account</button>
+          </div>
+        </div>
+      </div>
+      <!-- LOGIN -->
+      <div id="acct-page-login" style="display:none;">
+        <div id="acct-body-login" style="padding:16px;">
+          <div class="acct-field">
+            <label for="acct-login-user">Username</label>
+            <input class="acct-inp" id="acct-login-user" type="text" maxlength="14" placeholder="Your username" autocomplete="username">
+          </div>
+          <div class="acct-field">
+            <label for="acct-login-pw">Password</label>
+            <input class="acct-inp" id="acct-login-pw" type="password" maxlength="16" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')acctLogin()">
+          </div>
+          <div class="acct-err" id="acct-login-err"></div>
+          <div class="acct-footer">
+            <button class="acct-btn" onclick="closeAccountModal()">Cancel</button>
+            <button class="acct-btn primary" onclick="acctLogin()">Log In</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- BROADCAST TOAST CONTAINER -->
-<div id="broadcast-toast-container"></div>
+<!-- NO ACCOUNT ERROR OVERLAY -->
+<div id="noacct-error">
+  <div id="noacct-error-box">
+    <div id="noacct-error-title">
+      <span>⚠ Not Signed In</span>
+      <span style="cursor:pointer;opacity:.8;" onclick="hideNoAcctError()">✕</span>
+    </div>
+    <div id="noacct-error-body">
+      <div class="noacct-icon">🔒</div>
+      <div class="noacct-msg">You need a <strong>Wiggly Account</strong> to join or host Social Drawing rooms.<br><br>Create a free account to start drawing with others!</div>
+      <div class="noacct-btns">
+        <button class="noacct-btn" onclick="hideNoAcctError()">Cancel</button>
+        <button class="noacct-btn primary" onclick="hideNoAcctError();openAccountModal()">Create Account / Log In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL DRAWING PANEL -->
+<div id="social-panel">
+  <div id="social-panel-title">
+    <span>🎨 Social Drawing</span>
+    <span style="cursor:pointer;opacity:.8;font-size:14px;" onclick="closeSocialPanel()">✕</span>
+  </div>
+  <div id="social-panel-body">
+    <div class="sp-tab-bar">
+      <div class="sp-tab active" id="sp-tab-host" onclick="spSwitchTab('host')">📡 Host</div>
+      <div class="sp-tab" id="sp-tab-join" onclick="spSwitchTab('join')">🔗 Join</div>
+      <div class="sp-tab" id="sp-tab-room" onclick="spSwitchTab('room')" style="display:none;">🖌 Room</div>
+    </div>
+
+    <!-- HOST TAB -->
+    <div class="sp-page active" id="sp-page-host">
+      <div style="background:#e8f4ff;border:1px solid #9cc;padding:8px;font-size:11px;color:#1a5ca8;" id="sp-host-acct-info">
+        Hosting as: <strong id="sp-host-as-name">—</strong>
+      </div>
+      <div>
+        <div class="sp-section-label">Room Name</div>
+        <input class="sp-input" id="sp-host-name" type="text" maxlength="30" placeholder="My Drawing Room" value="My Drawing Room">
+      </div>
+      <button class="sp-btn primary" id="sp-host-btn" onclick="startHosting()">📡 Start Hosting</button>
+      <div id="sp-host-status" class="sp-status-box info" style="display:none;"></div>
+    </div>
+
+    <!-- JOIN TAB -->
+    <div class="sp-page" id="sp-page-join">
+      <div style="background:#e8f4ff;border:1px solid #9cc;padding:8px;font-size:11px;color:#1a5ca8;" id="sp-join-acct-info">
+        Joining as: <strong id="sp-join-as-name">—</strong>
+      </div>
+      <div>
+        <div class="sp-section-label">Room Code</div>
+        <div class="sp-row">
+          <input class="sp-input" id="sp-join-code" type="text" maxlength="60" placeholder="Paste room code here..." style="flex:1;">
+        </div>
+        <div style="font-size:10px;color:#888;margin-top:3px;">Paste the code shared by the host</div>
+      </div>
+      <button class="sp-btn primary" id="sp-join-btn" onclick="joinRoom()">🔗 Join Room</button>
+      <div id="sp-join-status" class="sp-status-box info" style="display:none;"></div>
+    </div>
+
+    <!-- ROOM TAB (active session) -->
+    <div class="sp-page" id="sp-page-room">
+      <div>
+        <div class="sp-section-label" id="sp-room-title-label">Room: —</div>
+        <div id="sp-room-code-wrap" style="display:none;">
+          <div style="font-size:10px;color:#555;margin-bottom:3px;">Share this code with others:</div>
+          <div class="sp-code-box" id="sp-room-code-display" onclick="copyRoomCode()" title="Click to copy">—</div>
+          <div style="font-size:10px;color:#888;margin-top:2px;">Click to copy</div>
+        </div>
+      </div>
+      <div>
+        <div class="sp-section-label">Connected (<span id="sp-peer-count">0</span>)</div>
+        <div class="sp-peers" id="sp-peer-list"></div>
+      </div>
+      <hr class="sp-divider">
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1;">
+        <div class="sp-section-label">Chat</div>
+        <div id="sp-chat-log"></div>
+        <div class="sp-chat-row">
+          <input class="sp-input" id="sp-chat-inp" type="text" maxlength="200" placeholder="Type message..." style="flex:1;" onkeydown="if(event.key==='Enter')spSendChat()">
+          <button class="sp-btn" onclick="spSendChat()">Send</button>
+        </div>
+      </div>
+      <hr class="sp-divider">
+      <div class="sp-row" style="justify-content:flex-end;gap:6px;">
+        <button class="sp-btn danger" onclick="leaveRoom()">✕ Leave Room</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 // ══════════════════════════════════════════════════════════
-// PANEL — MS Paint style dialog + shout broadcast
+// ACCOUNT SYSTEM
 // ══════════════════════════════════════════════════════════
-const PANEL_CODE = 'Grug4Life';
-let panelUnlocked = false;
-const BC_KEY = 'wiggly_broadcast';
-let lastBcSeen = localStorage.getItem(BC_KEY+'_ts') || '0';
 
-function openPanel(){
-  const d=document.getElementById('panel-dialog');
-  d.style.display='block';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>d.classList.add('open')));
-  if(panelUnlocked) showInterior(); else showLock();
-}
-function closePanel(){
-  const d=document.getElementById('panel-dialog');
-  d.classList.remove('open');
-  setTimeout(()=>{ if(!d.classList.contains('open')) d.style.display='none'; },220);
-}
-function showLock(){
-  document.getElementById('pd-lock').style.display='flex';
-  document.getElementById('pd-interior').classList.remove('show');
-  document.getElementById('pd-code-inp').value='';
-  document.getElementById('pd-code-err').textContent='';
-}
-function showInterior(){
-  document.getElementById('pd-lock').style.display='none';
-  document.getElementById('pd-interior').classList.add('show');
-}
-function tryUnlock(){
-  const inp=document.getElementById('pd-code-inp');
-  if(inp.value===PANEL_CODE){
-    panelUnlocked=true;
-    showInterior();
-  } else {
-    inp.classList.remove('wrong');
-    void inp.offsetWidth;
-    inp.classList.add('wrong');
-    document.getElementById('pd-code-err').textContent='Incorrect code. Try again.';
-    inp.value='';
-    playBeep(200,0.12);
-  }
-}
-function lockOut(){
-  panelUnlocked=false;
-  showLock();
-}
-document.getElementById('pd-code-inp').addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock();});
-
-function sendShout(){
-  const inp=document.getElementById('pd-shout-inp');
-  const msg=inp.value.trim();
-  if(!msg){document.getElementById('pd-shout-status').textContent='Please type a message first.';return;}
-  const ts=Date.now();
-  localStorage.setItem(BC_KEY,JSON.stringify({msg,ts}));
-  localStorage.setItem(BC_KEY+'_ts',String(ts));
-  lastBcSeen=String(ts);
-  inp.value='';
-  document.getElementById('pd-shout-status').textContent='Sent!';
-  setTimeout(()=>document.getElementById('pd-shout-status').textContent='',2000);
-  showBroadcastToast(msg);
-  playBeep(800,0.1);
-}
-document.getElementById('pd-shout-inp').addEventListener('keydown',e=>{if(e.key==='Enter')sendShout();});
-
-function showBroadcastToast(msg){
-  const container=document.getElementById('broadcast-toast-container');
-  const toast=document.createElement('div');
-  toast.className='bc-toast';
-  toast.innerHTML=`
-    <div class="bc-toast-head">
-      <div class="bc-toast-title">📢 Alert!</div>
-      <div class="bc-toast-x" onclick="dismissToast(this)">✕</div>
-    </div>
-    <div class="bc-toast-body">
-      <div class="bc-toast-label">Broadcast</div>
-      <div class="bc-toast-msg">${escHtml(msg)}</div>
-    </div>`;
-  container.appendChild(toast);
-  setTimeout(()=>dismissToast(toast.querySelector('.bc-toast-x')),7000);
-}
-function dismissToast(el){
-  const toast=el.closest('.bc-toast');
-  if(!toast||toast.classList.contains('out'))return;
-  toast.classList.add('out');
-  setTimeout(()=>toast.remove(),200);
-}
 function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// Poll for broadcasts from other tabs
-setInterval(()=>{
-  try{
-    const stored=localStorage.getItem(BC_KEY);
-    if(!stored)return;
-    const {msg,ts}=JSON.parse(stored);
-    if(String(ts)!==lastBcSeen){lastBcSeen=String(ts);showBroadcastToast(msg);playBeep(600,0.08);}
-  }catch(e){}
-},1000);
+const ACCT_STORE_KEY = 'wiggly_accounts_v1';
+const ACCT_SESSION_KEY = 'wiggly_session_v1';
 
-function playBeep(freq,vol){
+// Profanity/slur blocklist (common terms - case-insensitive substring match)
+const BANNED_WORDS = [
+  'fuck','shit','ass','bitch','cunt','dick','cock','pussy','nigger','nigga',
+  'fag','faggot','retard','kike','spic','chink','gook','tranny','whore',
+  'slut','bastard','piss','damn','crap','twat','wank','spunk','jizz',
+  'pedo','nazi','rape','kkk','nonce'
+];
+
+function containsBannedWord(str) {
+  const lower = str.toLowerCase().replace(/[^a-z0-9]/g,'');
+  return BANNED_WORDS.some(w => lower.includes(w));
+}
+
+function getAccounts() {
+  try { return JSON.parse(localStorage.getItem(ACCT_STORE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveAccounts(accounts) {
+  localStorage.setItem(ACCT_STORE_KEY, JSON.stringify(accounts));
+}
+
+// Simple hash (not cryptographic, but fine for local storage demo)
+function hashPw(pw) {
+  let h = 0;
+  for(let i=0;i<pw.length;i++) h = (Math.imul(31,h)+pw.charCodeAt(i))|0;
+  return 'h'+Math.abs(h)+'_'+pw.length+'_'+pw.split('').reverse().join('').slice(0,4);
+}
+
+// Session
+let acctSession = null;
+try { acctSession = JSON.parse(localStorage.getItem(ACCT_SESSION_KEY)); } catch(e) {}
+
+function isLoggedIn() { return !!acctSession; }
+function getUsername() { return acctSession ? acctSession.username : ''; }
+
+function openAccountModal() {
+  const overlay = document.getElementById('acct-overlay');
+  overlay.classList.add('show');
+  refreshAccountModal();
+}
+function closeAccountModal() {
+  document.getElementById('acct-overlay').classList.remove('show');
+}
+function refreshAccountModal() {
+  const loggedIn = isLoggedIn();
+  document.getElementById('acct-logged-in').style.display = loggedIn ? 'flex' : 'none';
+  document.getElementById('acct-auth-ui').style.display = loggedIn ? 'none' : 'block';
+  if(loggedIn) {
+    const accts = getAccounts();
+    const u = acctSession.username;
+    const rec = accts[u.toLowerCase()] || {};
+    document.getElementById('acct-display-name').textContent = u;
+    const avEl = document.getElementById('acct-avatar-letter');
+    if(rec.pfp) {
+      avEl.innerHTML = `<img src="${rec.pfp}" alt="${escHtml(u)}">`;
+    } else {
+      avEl.textContent = u[0].toUpperCase();
+    }
+    const joined = rec.created ? new Date(rec.created).toLocaleDateString() : '?';
+    document.getElementById('acct-display-joined').textContent = 'Joined '+joined;
+    updateAcctButton();
+  }
+}
+
+function updateAcctButton() {
+  const btn = document.getElementById('acct-btn');
+  if(isLoggedIn()) {
+    const accts = getAccounts();
+    const u = getUsername();
+    const rec = accts[u.toLowerCase()] || {};
+    if(rec.pfp) {
+      btn.innerHTML = `<img src="${rec.pfp}" style="width:16px;height:16px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:3px;"> ${escHtml(u)}`;
+    } else {
+      btn.textContent = '👤 '+u;
+    }
+    btn.style.background = 'rgba(80,200,120,.35)';
+    btn.style.borderColor = 'rgba(80,200,120,.6)';
+  } else {
+    btn.textContent = '👤 Account';
+    btn.style.background = '';
+    btn.style.borderColor = '';
+  }
+}
+
+function acctUploadPfp(input) {
+  const file = input.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')) { alert('Please choose an image file.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    // Resize to max 128x128 for storage efficiency
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const size = 128;
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const s = Math.min(size/img.width, size/img.height);
+      const dw = img.width*s, dh = img.height*s;
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0,0,size,size);
+      ctx.drawImage(img, (size-dw)/2, (size-dh)/2, dw, dh);
+      const pfp = canvas.toDataURL('image/jpeg', 0.8);
+      const accts = getAccounts();
+      const u = getUsername();
+      if(accts[u.toLowerCase()]) {
+        accts[u.toLowerCase()].pfp = pfp;
+        saveAccounts(accts);
+        refreshAccountModal();
+        flash('Profile picture updated!');
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  input.value = ''; // reset so same file can be re-uploaded
+}
+
+function acctSwitchTab(tab) {
+  document.querySelectorAll('.acct-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('acct-tab-'+tab).classList.add('active');
+  document.getElementById('acct-page-create').style.display = tab==='create'?'block':'none';
+  document.getElementById('acct-page-login').style.display = tab==='login'?'block':'none';
+  document.getElementById('acct-create-err').textContent='';
+  document.getElementById('acct-login-err').textContent='';
+}
+
+function acctValidateUsername(inp) {
+  const v = inp.value;
+  const ok = /^[a-zA-Z0-9_]{3,14}$/.test(v) && !containsBannedWord(v);
+  inp.classList.toggle('err-inp', v.length>0 && !ok);
+}
+function acctValidatePw(inp) {
+  const ok = inp.value.length>=8 && inp.value.length<=16;
+  inp.classList.toggle('err-inp', inp.value.length>0 && !ok);
+}
+
+function acctCreate() {
+  const user = document.getElementById('acct-create-user').value.trim();
+  const pw = document.getElementById('acct-create-pw').value;
+  const pw2 = document.getElementById('acct-create-pw2').value;
+  const errEl = document.getElementById('acct-create-err');
+  errEl.textContent='';
+
+  if(!user) { errEl.textContent='Please enter a username.'; return; }
+  if(!/^[a-zA-Z0-9_]+$/.test(user)) { errEl.textContent='Username can only contain letters, numbers, and underscores.'; return; }
+  if(user.length<3||user.length>14) { errEl.textContent='Username must be 3–14 characters.'; return; }
+  if(containsBannedWord(user)) { errEl.textContent='That username contains a prohibited word. Please choose another.'; return; }
+  if(pw.length<8||pw.length>16) { errEl.textContent='Password must be 8–16 characters.'; return; }
+  if(pw!==pw2) { errEl.textContent='Passwords do not match.'; return; }
+
+  const accounts = getAccounts();
+  if(accounts[user.toLowerCase()]) { errEl.textContent='That username is already taken. Try another or log in.'; return; }
+
+  accounts[user.toLowerCase()] = { username:user, pw:hashPw(pw), created:Date.now() };
+  saveAccounts(accounts);
+  acctSession = { username:user };
+  localStorage.setItem(ACCT_SESSION_KEY, JSON.stringify(acctSession));
+  // Update spMyName
+  if(typeof spMyName!=='undefined') spMyName=user;
+  updateAcctButton();
+  refreshAccountModal();
+}
+
+function acctLogin() {
+  const user = document.getElementById('acct-login-user').value.trim();
+  const pw = document.getElementById('acct-login-pw').value;
+  const errEl = document.getElementById('acct-login-err');
+  errEl.textContent='';
+  if(!user||!pw) { errEl.textContent='Please enter username and password.'; return; }
+  const accounts = getAccounts();
+  const rec = accounts[user.toLowerCase()];
+  if(!rec) { errEl.textContent='No account found with that username.'; return; }
+  if(rec.pw !== hashPw(pw)) { errEl.textContent='Incorrect password.'; return; }
+  acctSession = { username:rec.username };
+  localStorage.setItem(ACCT_SESSION_KEY, JSON.stringify(acctSession));
+  if(typeof spMyName!=='undefined') spMyName=rec.username;
+  updateAcctButton();
+  refreshAccountModal();
+}
+
+function acctLogout() {
+  acctSession=null;
+  localStorage.removeItem(ACCT_SESSION_KEY);
+  if(typeof spInRoom!=='undefined'&&spInRoom) leaveRoom();
+  if(typeof spMyName!=='undefined') spMyName='';
+  updateAcctButton();
+  refreshAccountModal();
+}
+
+function showNoAcctError() {
+  const el = document.getElementById('noacct-error');
+  el.classList.add('show');
+  // Auto-dismiss after 8s
+  clearTimeout(el._dismissTimer);
+  el._dismissTimer = setTimeout(()=>hideNoAcctError(),8000);
+}
+function hideNoAcctError() {
+  const el = document.getElementById('noacct-error');
+  el.classList.remove('show');
+  clearTimeout(el._dismissTimer);
+}
+
+// Initialize account state on load
+updateAcctButton();
+// If already logged in, set spMyName when social JS loads
+document.addEventListener('DOMContentLoaded',()=>{ if(typeof spMyName!=='undefined'&&isLoggedIn()) spMyName=getUsername(); });
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// SOCIAL DRAWING — PeerJS direct room code multiplayer
+// ══════════════════════════════════════════════════════════
+
+const ICE_CONFIG = {iceServers:[
+  {urls:'stun:stun.l.google.com:19302'},
+  {urls:'stun:stun1.l.google.com:19302'},
+  {urls:'stun:openrelay.metered.ca:80'},
+  {urls:'turn:openrelay.metered.ca:80',username:'openrelayproject',credential:'openrelayproject'},
+  {urls:'turn:openrelay.metered.ca:443',username:'openrelayproject',credential:'openrelayproject'},
+  {urls:'turn:openrelay.metered.ca:443?transport=tcp',username:'openrelayproject',credential:'openrelayproject'}
+]};
+
+// PeerJS state
+let spPeer = null;
+let spConnections = [];
+let spIsHost = false;
+let spRoomName = '';
+let spRoomCode = '';
+let spMyName = '';
+let spInRoom = false;
+let spRemoteDrawing = false;
+
+// Username from account session
+spMyName = (typeof acctSession!=='undefined'&&acctSession) ? acctSession.username : '';
+
+function openSocialPanel(){
+  if(typeof acctSession!=='undefined'&&acctSession) spMyName=acctSession.username;
+  document.getElementById('social-panel').classList.add('open');
+  const nameDisplay = isLoggedIn() ? getUsername() : '— (not signed in)';
+  const asEl1 = document.getElementById('sp-join-as-name');
+  const asEl2 = document.getElementById('sp-host-as-name');
+  if(asEl1) asEl1.textContent = nameDisplay;
+  if(asEl2) asEl2.textContent = nameDisplay;
+}
+function closeSocialPanel(){
+  document.getElementById('social-panel').classList.remove('open');
+}
+
+function spSwitchTab(tab){
+  document.querySelectorAll('.sp-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sp-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('sp-tab-'+tab).classList.add('active');
+  document.getElementById('sp-page-'+tab).classList.add('active');
+}
+
+// ── HOSTING ───────────────────────────────────────────────
+function startHosting(){
+  if(!isLoggedIn()){ closeSocialPanel(); showNoAcctError(); return; }
+  if(typeof acctSession!=='undefined'&&acctSession) spMyName=acctSession.username;
+  const name = document.getElementById('sp-host-name').value.trim() || 'My Drawing Room';
+
+  spRoomName = name;
+  spIsHost = true;
+
+  const statusEl = document.getElementById('sp-host-status');
+  statusEl.style.display='block';
+  statusEl.className='sp-status-box info';
+  statusEl.innerHTML='<span class="sp-spinner"></span> Creating room...';
+  document.getElementById('sp-host-btn').disabled=true;
+
+  spPeer = new Peer(undefined, {debug:0, config:ICE_CONFIG});
+
+  spPeer.on('open', id=>{
+    spRoomCode = id;
+    spInRoom = true;
+    statusEl.className='sp-status-box ok';
+    statusEl.innerHTML='✓ Room created!';
+    document.getElementById('sp-host-btn').disabled=false;
+    enterRoomUI(true);
+    spAddChatMsg('System','Room created! Share the code above with friends.','sys');
+  });
+
+  spPeer.on('connection', conn=>{
+    conn.on('open',()=>{
+      conn._spName = conn.peer.slice(-6);
+      spConnections.push(conn);
+      // Send joining peer our room name and canvas
+      conn.send({type:'welcome', roomName:spRoomName});
+      sendCanvasSnapshot(conn);
+      spAddChatMsg('System', conn._spName+' joined!', 'sys');
+      updatePeerList();
+      broadcastToPeers({type:'peer-join', name:conn._spName}, conn);
+    });
+    conn.on('data', data=>{ handlePeerData(data, conn); });
+    conn.on('close',()=>{
+      spConnections = spConnections.filter(c=>c!==conn);
+      if(conn._spName) spAddChatMsg('System', conn._spName+' left.','sys');
+      updatePeerList();
+    });
+    conn.on('error',()=>{
+      spConnections = spConnections.filter(c=>c!==conn);
+      updatePeerList();
+    });
+  });
+
+  spPeer.on('error', err=>{
+    statusEl.className='sp-status-box err';
+    statusEl.textContent='Error: '+err.type;
+    document.getElementById('sp-host-btn').disabled=false;
+    spPeer=null;
+  });
+}
+
+// ── JOINING ───────────────────────────────────────────────
+function joinRoom(){
+  if(!isLoggedIn()){ closeSocialPanel(); showNoAcctError(); return; }
+  if(typeof acctSession!=='undefined'&&acctSession) spMyName=acctSession.username;
+  const code = document.getElementById('sp-join-code').value.trim();
+  if(!code){ alert('Please enter a room code.'); return; }
+
+  const statusEl = document.getElementById('sp-join-status');
+  statusEl.style.display='block';
+  statusEl.className='sp-status-box info';
+  statusEl.innerHTML='<span class="sp-spinner"></span> Connecting...';
+  document.getElementById('sp-join-btn').disabled=true;
+
+  spPeer = new Peer(undefined, {debug:0, config:ICE_CONFIG});
+  spPeer.on('open', ()=>{
+    const conn = spPeer.connect(code, {reliable:true});
+    spConnections = [conn];
+    spIsHost = false;
+    spRoomCode = code;
+
+    conn.on('open',()=>{
+      statusEl.innerHTML='<span class="sp-spinner"></span> Waiting for host...';
+      // Send our name + our own peer ID to host
+      conn.send({type:'hello', name:spMyName, pfp:getMyPfp(), _pid:spPeer.id});
+    });
+    conn.on('data', data=>{
+      if(data.type==='welcome'){
+        spInRoom=true;
+        spRoomName = data.roomName || code;
+        statusEl.className='sp-status-box ok';
+        statusEl.textContent='✓ Connected!';
+        document.getElementById('sp-join-btn').disabled=false;
+        enterRoomUI(false);
+        spAddChatMsg('System','Joined the room!','sys');
+      } else {
+        // Route everything through handlePeerData (canvas-snap, grabs, cursors, strokes, etc.)
+        handlePeerData(data, conn);
+      }
+    });
+    conn.on('close',()=>{
+      if(!spInRoom){
+        statusEl.className='sp-status-box err';
+        statusEl.textContent='Connection closed. Room may not exist.';
+        document.getElementById('sp-join-btn').disabled=false;
+        spPeer=null; spConnections=[];
+        return;
+      }
+      spAddChatMsg('System','Disconnected from room.','sys');
+      leaveRoom();
+    });
+    conn.on('error', err=>{
+      statusEl.className='sp-status-box err';
+      statusEl.textContent='Connection error: '+err.type;
+      document.getElementById('sp-join-btn').disabled=false;
+      spPeer=null; spConnections=[];
+    });
+  });
+  spPeer.on('error', err=>{
+    statusEl.className='sp-status-box err';
+    statusEl.textContent='Peer error: '+err.type;
+    document.getElementById('sp-join-btn').disabled=false;
+    spPeer=null;
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+// CANVAS SYNC
+// ══════════════════════════════════════════════════════════
+function sendCanvasSnapshot(conn){
   try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);
-    o.frequency.value=freq;o.type='sine';
-    g.gain.setValueAtTime(vol,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);
-    o.start();o.stop(ctx.currentTime+0.2);
+    const dataURL=dc.toDataURL('image/png');
+    conn.send({type:'canvas-snap', canvas:dataURL, _pid:spPeer?spPeer.id:'host'});
   }catch(e){}
 }
+
+// ══════════════════════════════════════════════════════════
+// PEER MESSAGING
+// ══════════════════════════════════════════════════════════
+function broadcastToPeers(msg, exclude){
+  // Stamp our own peer ID into every outgoing message so all recipients can identify sender
+  const stamped={...msg, _pid: spPeer ? spPeer.id : 'host'};
+  const targets = spIsHost
+    ? spConnections.filter(c=>c!==exclude && c.open)
+    : spConnections.filter(c=>c.open);
+  targets.forEach(c=>{ try{c.send(stamped);}catch(e){} });
+}
+
+function handlePeerData(data, fromConn){
+  // Use _pid stamped in the message (survives host relay) so we always know the real sender
+  const senderPid = data._pid || (fromConn ? fromConn.peer : 'unknown');
+
+  if(data.type==='hello'){
+    if(fromConn && data.name){
+      fromConn._spName=data.name; fromConn._spPfp=data.pfp||null;
+      fromConn._spPid=senderPid;
+      updatePeerList();
+    }
+    return;
+  }
+
+  if(data.type==='canvas-snap'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    // Clear that player's grab overlay since canvas is now committed
+    if(remoteStates[senderPid]) remoteStates[senderPid].grab=null;
+    applyRemoteCanvas(data.canvas);
+    return;
+  }
+
+  if(data.type==='grab-state'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    if(!remoteStates[senderPid]) remoteStates[senderPid]={};
+    const rs=remoteStates[senderPid];
+    if(data.mode==='none'){ rs.grab=null; }
+    else if(data.mode==='rect'){ rs.grab={mode:'rect',x1:data.x1,y1:data.y1,x2:data.x2,y2:data.y2}; }
+    else if(data.mode==='float'){
+      const prev=rs.grab;
+      if(!prev||prev.mode!=='float'||prev.w!==data.w||prev.h!==data.h||data.img!==prev.lastImg){
+        const img=new Image(); if(data.img){img.src=data.img;}
+        rs.grab={mode:'float',floatX:data.floatX,floatY:data.floatY,w:data.w,h:data.h,rot:data.rot||0,imgEl:img,lastImg:data.img};
+      } else {
+        prev.floatX=data.floatX; prev.floatY=data.floatY; prev.rot=data.rot||0;
+      }
+    }
+    return;
+  }
+
+  if(data.type==='cursor'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    if(!remoteStates[senderPid]) remoteStates[senderPid]={};
+    remoteStates[senderPid].cursor={x:data.x, y:data.y, name:data.name};
+    return;
+  }
+
+  if(data.type==='text-stamp'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    spRemoteDrawing=true;
+    dCtx.save();dCtx.globalAlpha=data.op||1;dCtx.fillStyle=data.clr||'#000';
+    dCtx.font=`${data.size||24}px '${data.font||'Comic Sans MS'}',sans-serif`;
+    dCtx.textBaseline='top';dCtx.fillText(data.txt,data.x,data.y);dCtx.restore();
+    spRemoteDrawing=false;
+    return;
+  }
+
+  if(data.type==='strokes'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    replayStrokes(data.strokes);
+  } else if(data.type==='fill'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    replayFill(data);
+  } else if(data.type==='string-state'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    stringNodes=data.nodes; stringEdges=data.edges;
+  } else if(data.type==='obliterate'){
+    if(spIsHost) broadcastToPeers(data, fromConn);
+    saveHistory();
+    dCtx.fillStyle='#fff'; dCtx.fillRect(0,0,W,H);
+    flash('Canvas obliterated!');
+  } else if(data.type==='chat'){
+    spAddChatMsg(data.name||'Peer', data.msg, 'peer', data.pfp||null);
+    if(spIsHost) broadcastToPeers(data, fromConn);
+  } else if(data.type==='peer-join'){
+    spAddChatMsg('System',(data.name||'Someone')+' joined!','sys');
+    updatePeerList();
+  }
+}
+
+// ── Remote player state tracking ──────────────────────────
+// keyed by _pid: { cursor:{x,y,name}, grab:{mode,...} }
+const remoteStates = {};
+
+// Stable color per player from their peer ID hash
+const PLAYER_COLORS=['#e53935','#00897b','#1e88e5','#8e24aa','#f4511e','#43a047','#d81b60','#00acc1','#fb8c00','#6d4c41'];
+function playerColor(pid){
+  let h=0; for(let i=0;i<pid.length;i++) h=(h*31+pid.charCodeAt(i))&0xffff;
+  return PLAYER_COLORS[h%PLAYER_COLORS.length];
+}
+
+// ── Canvas snap broadcast ──────────────────────────────────
+function spBroadcastCanvasSnap(){
+  if(!spInRoom||spRemoteDrawing) return;
+  try{
+    const canvas=dc.toDataURL('image/png');
+    const msg={type:'canvas-snap', canvas};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0]) try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){}
+  }catch(e){}
+}
+
+function applyRemoteCanvas(dataURL){
+  if(!dataURL) return;
+  spRemoteDrawing=true;
+  const img=new Image();
+  img.onload=()=>{ dCtx.clearRect(0,0,W,H); dCtx.drawImage(img,0,0,W,H); spRemoteDrawing=false; };
+  img.src=dataURL;
+}
+
+// ── Cursor broadcast ───────────────────────────────────────
+let _cursorTimer=null;
+function spBroadcastCursor(x,y){
+  if(!spInRoom||spRemoteDrawing) return;
+  clearTimeout(_cursorTimer);
+  _cursorTimer=setTimeout(()=>{
+    const msg={type:'cursor', x, y, name:spMyName};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0]) try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){}
+  },16);
+}
+
+// ── Grab state broadcast ───────────────────────────────────
+let _grabTimer=null;
+function spBroadcastGrabState(forceMode){
+  if(!spInRoom||spRemoteDrawing) return;
+  // If forced to 'none', send immediately
+  if(forceMode==='none'){
+    const msg={type:'grab-state', mode:'none'};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0]) try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){}
+    return;
+  }
+  // Rect: send immediately for real-time feel
+  if(grabMode==='rect'){
+    const msg={type:'grab-state', mode:'rect', x1:Math.min(startX,lastX),y1:Math.min(startY,lastY),x2:Math.max(startX,lastX),y2:Math.max(startY,lastY)};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0]) try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){}
+    return;
+  }
+  // Float: throttle at ~60fps
+  clearTimeout(_grabTimer);
+  _grabTimer=setTimeout(()=>{
+    if(!sel.active){spBroadcastGrabState('none');return;}
+    let imgDataUrl=null;
+    try{
+      const tmp=document.createElement('canvas');tmp.width=Math.max(1,sel.rect.w);tmp.height=Math.max(1,sel.rect.h);
+      const tCtx=tmp.getContext('2d');tCtx.clearRect(0,0,tmp.width,tmp.height);tCtx.putImageData(sel.floatImg,0,0);
+      imgDataUrl=tmp.toDataURL('image/png');
+    }catch(ex){}
+    const msg={type:'grab-state',mode:'float',floatX:sel.floatX,floatY:sel.floatY,w:sel.rect.w,h:sel.rect.h,rot:selRotAngle,img:imgDataUrl};
+    broadcastToPeers(msg);
+    if(!spIsHost&&spConnections[0]) try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){}
+  },16);
+}
+
+// ── Remote overlay rendering ───────────────────────────────
+function drawRemoteOverlays(){
+  for(const pid in remoteStates){
+    const rs=remoteStates[pid];
+    const col=playerColor(pid);
+    lCtx.save();
+
+    // Grab overlay
+    if(rs.grab){
+      const g=rs.grab;
+      if(g.mode==='rect'){
+        const rx=g.x1*SCALE,ry=g.y1*SCALE,rw=(g.x2-g.x1)*SCALE,rh=(g.y2-g.y1)*SCALE;
+        lCtx.fillStyle=col+'22';lCtx.fillRect(rx,ry,rw,rh);
+        lCtx.lineWidth=2;lCtx.setLineDash([6,4]);lCtx.lineDashOffset=dashOffset;
+        lCtx.strokeStyle=col;lCtx.strokeRect(rx+1,ry+1,rw-2,rh-2);
+        lCtx.lineDashOffset=dashOffset+10;lCtx.strokeStyle='#fff';lCtx.strokeRect(rx+1,ry+1,rw-2,rh-2);
+        lCtx.setLineDash([]);
+      } else if(g.mode==='float'){
+        const bx=g.floatX*SCALE,by=g.floatY*SCALE,bw=g.w*SCALE,bh=g.h*SCALE;
+        const cx=bx+bw/2,cy=by+bh/2;
+        lCtx.save();
+        lCtx.translate(cx,cy);lCtx.rotate(g.rot||0);
+        if(g.imgEl&&g.imgEl.complete&&g.imgEl.naturalWidth>0){
+          lCtx.globalAlpha=0.8;lCtx.imageSmoothingEnabled=false;
+          lCtx.drawImage(g.imgEl,-bw/2,-bh/2,bw,bh);lCtx.globalAlpha=1;
+        }
+        lCtx.lineWidth=2;lCtx.setLineDash([7,5]);lCtx.lineDashOffset=dashOffset;
+        lCtx.strokeStyle=col;lCtx.strokeRect(-bw/2+1,-bh/2+1,bw-2,bh-2);
+        lCtx.lineDashOffset=dashOffset+12;lCtx.strokeStyle='#fff';lCtx.strokeRect(-bw/2+1,-bh/2+1,bw-2,bh-2);
+        lCtx.setLineDash([]);
+        lCtx.restore();
+      }
+    }
+    lCtx.restore();
+
+    // Cursor
+    if(rs.cursor){
+      const cx=rs.cursor.x*SCALE, cy=rs.cursor.y*SCALE;
+      const name=rs.cursor.name||pid.slice(-4);
+      lCtx.save();
+      // Arrow cursor shape
+      lCtx.beginPath();
+      lCtx.moveTo(cx,cy);
+      lCtx.lineTo(cx+1,cy+13);
+      lCtx.lineTo(cx+4,cy+9);
+      lCtx.lineTo(cx+7,cy+15);
+      lCtx.lineTo(cx+9,cy+13.5);
+      lCtx.lineTo(cx+6,cy+8);
+      lCtx.lineTo(cx+11,cy+8);
+      lCtx.closePath();
+      lCtx.fillStyle=col; lCtx.fill();
+      lCtx.strokeStyle='#fff'; lCtx.lineWidth=1.5; lCtx.stroke();
+      // Name tag
+      lCtx.font='bold 10px Segoe UI,sans-serif';
+      const tw=lCtx.measureText(name).width+8;
+      lCtx.fillStyle=col; lCtx.fillRect(cx+13,cy-1,tw,14);
+      lCtx.fillStyle='#fff'; lCtx.fillText(name,cx+17,cy+10);
+      lCtx.restore();
+    }
+  }
+}
+
+// ── Stroke buffering ───────────────────────────────────────
+let spStrokeBuffer=[];
+let spStrokeTimer=null;
+
+function spBroadcastPoint(t, x, y, extra){
+  if(!spInRoom||spRemoteDrawing) return;
+  const pt={t, x, y, clr:color, sz:sw(), op:bOp, er:(tool==='eraser'), tl:tool, ...extra};
+  spStrokeBuffer.push(pt);
+  if(!spStrokeTimer){
+    spStrokeTimer=setTimeout(()=>{
+      if(spStrokeBuffer.length){
+        const msg={type:'strokes', strokes:[...spStrokeBuffer]};
+        broadcastToPeers(msg);
+        // Non-host also sends to host for rebroadcast
+        if(!spIsHost && spConnections[0]){ try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){} }
+      }
+      spStrokeBuffer=[];
+      spStrokeTimer=null;
+    },16);
+  }
+}
+
+function replayStrokes(strokes){
+  if(!strokes||!strokes.length) return;
+  spRemoteDrawing=true;
+  dCtx.save();
+  strokes.forEach(s=>{
+    const isErase=!!s.er;
+    dCtx.globalAlpha=isErase?1:(s.op||1);
+    dCtx.strokeStyle=dCtx.fillStyle=isErase?'#fff':s.clr;
+    dCtx.lineWidth=s.sz||1;
+    dCtx.lineJoin=dCtx.lineCap='round';
+    if(s.t==='down'){
+      dCtx.beginPath();
+      dCtx.arc(s.x,s.y,(s.sz||1)/2,0,Math.PI*2);
+      dCtx.fill();
+      dCtx.beginPath();
+      dCtx.moveTo(s.x,s.y);
+    } else if(s.t==='move'){
+      if(s.tl==='brush') dCtx.globalAlpha=Math.min(s.op||1,0.45);
+      else if(s.tl==='marker') dCtx.globalAlpha=Math.min(s.op||1,0.85);
+      dCtx.lineTo(s.x,s.y);
+      dCtx.stroke();
+      dCtx.beginPath();
+      dCtx.moveTo(s.x,s.y);
+    } else if(s.t==='up'){
+      dCtx.stroke();
+    } else if(s.t==='line'||s.t==='rect'||s.t==='circle'){
+      dCtx.lineWidth=s.sz;
+      dCtx.beginPath();
+      if(s.t==='line'){ dCtx.moveTo(s.x0,s.y0); dCtx.lineTo(s.x,s.y); dCtx.stroke(); }
+      else if(s.t==='rect'){ dCtx.strokeRect(s.x0,s.y0,s.x-s.x0,s.y-s.y0); }
+      else { const rx=Math.abs(s.x-s.x0)/2,ry=Math.abs(s.y-s.y0)/2; dCtx.ellipse(s.x0+(s.x-s.x0)/2,s.y0+(s.y-s.y0)/2,rx,ry,0,0,Math.PI*2); dCtx.stroke(); }
+    } else if(s.t==='fill'){
+      replayFill(s);
+    } else if(s.t==='spray'){
+      dCtx.fillStyle=s.clr; dCtx.globalAlpha=0.08;
+      (s.dots||[]).forEach(d=>{ dCtx.fillRect(d.x,d.y,1,1); });
+    }
+  });
+  dCtx.restore();
+  dCtx.globalAlpha=1;
+  spRemoteDrawing=false;
+}
+
+function replayFill(data){
+  spRemoteDrawing=true;
+  const savedColor=color;
+  color=data.clr;
+  if(data.nodes && data.nodes.length>0){
+    // Restore sender's string state temporarily, fill, then restore ours
+    const myNodes=stringNodes, myEdges=stringEdges;
+    stringNodes=data.nodes; stringEdges=data.edges||[];
+    const filled=fillStringLoop(data.x, data.y);
+    if(!filled) floodFill(data.x, data.y, null);
+    stringNodes=myNodes; stringEdges=myEdges;
+  } else {
+    floodFill(data.x, data.y, null);
+  }
+  color=savedColor;
+  spRemoteDrawing=false;
+}
+
+// ── String state sync ──────────────────────────────────────
+let spStringTimer=null;
+function spBroadcastStringState(){
+  if(!spInRoom||spRemoteDrawing) return;
+  clearTimeout(spStringTimer);
+  spStringTimer=setTimeout(()=>{
+    const msg={type:'string-state',
+      nodes:stringNodes.map(n=>({...n})),
+      edges:stringEdges.map(e=>({...e}))
+    };
+    broadcastToPeers(msg);
+    if(!spIsHost && spConnections[0]){ try{spConnections[0].send({...msg,_pid:spPeer?spPeer.id:'me'});}catch(e){} }
+  }, 50);
+}
+
+// ── Room UI ────────────────────────────────────────────────
+function enterRoomUI(isHost){
+  spSwitchTab('room');
+  document.getElementById('sp-tab-room').style.display='flex';
+  document.getElementById('social-btn').classList.add('connected');
+  document.getElementById('social-btn').textContent='🎨 Live';
+  document.getElementById('sp-room-title-label').textContent='Room: '+spRoomName;
+  if(isHost){
+    document.getElementById('sp-room-code-wrap').style.display='block';
+    document.getElementById('sp-room-code-display').textContent=spRoomCode;
+  } else {
+    document.getElementById('sp-room-code-wrap').style.display='none';
+  }
+  updatePeerList();
+  openSocialPanel();
+}
+
+function updatePeerList(){
+  const peers = spIsHost
+    ? [{name:spMyName,me:true}, ...spConnections.map(c=>({name:c._spName||'Peer',me:false}))]
+    : [{name:spMyName,me:true}];
+  document.getElementById('sp-peer-count').textContent=peers.length;
+  document.getElementById('sp-peer-list').innerHTML=peers.map(p=>
+    `<span class="sp-peer-chip${p.me?' me':''}">${escHtml(p.name)}</span>`
+  ).join('');
+}
+
+function copyRoomCode(){
+  const code = document.getElementById('sp-room-code-display').textContent;
+  navigator.clipboard.writeText(code).then(()=>flash('Room code copied!')).catch(()=>{});
+}
+
+function getMyPfp(){
+  if(!isLoggedIn()) return null;
+  const accts = getAccounts();
+  const rec = accts[getUsername().toLowerCase()];
+  return rec ? rec.pfp || null : null;
+}
+
+function makeAvatarHtml(who, pfp, type){
+  if(type==='sys') return '';
+  if(pfp) return `<div class="chat-avatar"><img src="${pfp}" alt="${escHtml(who)}"></div>`;
+  return `<div class="chat-avatar">${escHtml(who[0]||'?').toUpperCase()}</div>`;
+}
+
+function spAddChatMsg(who, msg, type, pfp){
+  const log = document.getElementById('sp-chat-log');
+  const el = document.createElement('div');
+  el.className = 'sp-chat-msg';
+  if(type === 'sys'){
+    el.innerHTML = `<div class="sp-chat-msg-body"><span class="sp-chat-who sys">${escHtml(who)}:</span> ${escHtml(msg)}</div>`;
+  } else {
+    const avHtml = makeAvatarHtml(who, pfp, type);
+    el.innerHTML = `${avHtml}<div class="sp-chat-msg-body"><span class="sp-chat-who ${type}">${escHtml(who)}:</span> ${escHtml(msg)}</div>`;
+  }
+  log.appendChild(el);
+  log.scrollTop=log.scrollHeight;
+}
+
+function spSendChat(){
+  const inp = document.getElementById('sp-chat-inp');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value='';
+  const pfp = getMyPfp();
+  spAddChatMsg(spMyName, msg, 'me', pfp);
+  broadcastToPeers({type:'chat', name:spMyName, msg, pfp});
+}
+
+function leaveRoom(){
+  spInRoom=false;
+  // Close connections
+  spConnections.forEach(c=>{ try{c.close();}catch(e){} });
+  spConnections=[];
+  if(spPeer){ try{spPeer.destroy();}catch(e){} spPeer=null; }
+  spIsHost=false;
+  // Reset UI
+  document.getElementById('social-btn').classList.remove('connected');
+  document.getElementById('social-btn').textContent = '🎨 Social';
+  document.getElementById('sp-tab-room').style.display='none';
+  document.getElementById('sp-chat-log').innerHTML='';
+  spSwitchTab('host');
+  document.getElementById('sp-host-btn').disabled=false;
+  document.getElementById('sp-host-status').style.display='none';
+  document.getElementById('sp-join-status').style.display='none';
+  flash('Left room.');
+}
+
+
+
+// ══════════════════════════════════════════════════════════
+// COPY / PASTE SELECTION (Grab tool)
+// ══════════════════════════════════════════════════════════
+let _selClipboard = null; // {img: ImageData, w, h}
+
+document.addEventListener('keydown', e=>{
+  if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)) return;
+  if(tool!=='grab') return;
+  // Ctrl+C — copy selection (knock out near-white = background)
+  if((e.ctrlKey||e.metaKey)&&e.key==='c'&&sel.active){
+    e.preventDefault();
+    const src=sel.floatImg;
+    const masked=new ImageData(new Uint8ClampedArray(src.data), src.width, src.height);
+    for(let i=0;i<masked.data.length;i+=4){
+      const r=masked.data[i],g=masked.data[i+1],b=masked.data[i+2];
+      // Treat near-white pixels (canvas background) as transparent
+      if(r>240&&g>240&&b>240) masked.data[i+3]=0;
+    }
+    _selClipboard={img:masked, w:src.width, h:src.height, angle:selRotAngle};
+    flash('Selection copied (background stripped)');
+  }
+  // Ctrl+V — paste clipboard as new floating selection
+  if((e.ctrlKey||e.metaKey)&&e.key==='v'&&_selClipboard){
+    e.preventDefault();
+    // Commit whatever is currently selected first
+    commitSelection();
+    saveHistory();
+    // Place pasted image offset slightly from original
+    const px=Math.min(W-_selClipboard.w-2, 10);
+    const py=Math.min(H-_selClipboard.h-2, 10);
+    sel.floatImg=new ImageData(new Uint8ClampedArray(_selClipboard.img.data), _selClipboard.w, _selClipboard.h);
+    sel.rect={x:px,y:py,w:_selClipboard.w,h:_selClipboard.h};
+    sel.floatX=px; sel.floatY=py; sel.active=true;
+    selRotAngle=_selClipboard.angle||0;
+    resizeOrigRect={...sel.rect}; resizeOrigImg=sel.floatImg;
+    flash('Pasted — drag to position, Esc to stamp');
+  }
+});
+
 </script>
+
 </body>
 </html>
