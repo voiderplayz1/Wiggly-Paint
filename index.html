@@ -367,7 +367,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Speed</span>
-          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="14" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
+          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
           <span class="wig-val" id="spv">2.5×</span>
         </div>
         <div class="wig-row">
@@ -1149,7 +1149,9 @@ function onDown(e){
     } else {
       // Check resize handles
       const handle=getHandleAt(p);
-      if(handle&&sel.active){grabMode='resize';resizeHandle=handle;painting=true;return;}
+      if(handle&&sel.active){grabMode='resize';resizeHandle=handle;painting=true;
+        resizeSpringX=1;resizeSpringY=1;resizePrevW=sel.rect.w;resizePrevH=sel.rect.h;
+        return;}
       commitSelection();painting=true;grabMode='rect';startX=lastX=p.x;startY=lastY=p.y;
     }
     return;
@@ -1260,6 +1262,10 @@ function onUp(e){
       else lCtx.clearRect(0,0,W*SCALE,H*SCALE);
       spBroadcastGrabState('none');
     }
+    if(grabMode==='resize'){
+      // Let spring settle, keep floatImg as original — it gets properly scaled on commitSelection
+      resizeSpringX=1;resizeSpringY=1;resizePrevW=0;resizePrevH=0;
+    }
     grabMode=null;hc.style.cursor='grab';snap_=null;return;
   }
   // Broadcast stroke end
@@ -1290,6 +1296,9 @@ let resizeHandle=null,resizeOrigRect=null,resizeOrigImg=null;
 let sel={active:false,rect:{x:0,y:0,w:0,h:0},floatX:0,floatY:0,floatImg:null};
 let selRotAngle=0,rotStartAngle=0,rotOrigAngle=0;
 let dashOffset=0;
+// Spring squish/stretch for resize — overshoots then springs back
+let resizeSpringX=1, resizeSpringY=1; // scale multipliers applied while drawing selection
+let resizePrevW=0, resizePrevH=0;    // track last frame dimensions to compute velocity
 
 const HANDLE_SIZE=8; // px in screen coords
 
@@ -1325,6 +1334,15 @@ function doResize(p){
   if(resizeHandle.includes('s'))nh=Math.max(4,p.y-oy);
   if(resizeHandle.includes('w')){nw=Math.max(4,ox+ow-p.x);nx=p.x;}
   if(resizeHandle.includes('n')){nh=Math.max(4,oy+oh-p.y);ny=p.y;}
+  // Feed spring: overshoot in the direction being scaled
+  if(resizePrevW>0){
+    const dw=(nw-resizePrevW)/Math.max(1,resizePrevW);
+    const dh=(nh-resizePrevH)/Math.max(1,resizePrevH);
+    // Perpendicular axes squish: stretching X squishes Y and vice versa
+    resizeSpringX += dw * 0.35 - dh * 0.15;
+    resizeSpringY += dh * 0.35 - dw * 0.15;
+  }
+  resizePrevW=nw; resizePrevH=nh;
   sel.floatX=nx;sel.floatY=ny;sel.rect={x:nx,y:ny,w:nw,h:nh};
 }
 
@@ -1358,14 +1376,24 @@ function drawGrabOverlay(){
   } else if(sel.active){
     const bx=sel.floatX*SCALE,by=sel.floatY*SCALE,bw=sel.rect.w*SCALE,bh=sel.rect.h*SCALE;
     const cx=bx+bw/2,cy=by+bh/2;
-    // Draw float image with rotation — use clearRect so alpha is respected
+    // Draw float image with rotation — scaled from original captured image
     if(sel.floatImg){
-      const tmp=document.createElement('canvas');tmp.width=sel.rect.w;tmp.height=sel.rect.h;
-      const tCtx=tmp.getContext('2d');tCtx.clearRect(0,0,tmp.width,tmp.height);tCtx.putImageData(sel.floatImg,0,0);
+      // Decay spring toward 1 each draw frame
+      resizeSpringX += (1 - resizeSpringX) * 0.18;
+      resizeSpringY += (1 - resizeSpringY) * 0.18;
+      const clampSpring=v=>Math.max(0.6,Math.min(1.6,v));
+      const sx=clampSpring(resizeSpringX), sy=clampSpring(resizeSpringY);
+      // Always draw from original captured image so resize actually stretches content
+      const srcImg = resizeOrigImg || sel.floatImg;
+      const origW=srcImg.width, origH=srcImg.height;
+      const origC=document.createElement('canvas');origC.width=origW;origC.height=origH;
+      origC.getContext('2d').putImageData(srcImg,0,0);
       lCtx.save();
-      lCtx.translate(cx,cy);lCtx.rotate(selRotAngle);lCtx.translate(-bw/2,-bh/2);
+      lCtx.translate(cx,cy);lCtx.rotate(selRotAngle);
+      // Apply spring squish perpendicular to resize — scale around center
+      lCtx.scale(sx, sy);
       lCtx.imageSmoothingEnabled=false;
-      lCtx.drawImage(tmp,0,0,bw,bh);
+      lCtx.drawImage(origC,-bw/2,-bh/2,bw,bh);
       lCtx.restore();
     }
     // Rotated selection border
@@ -1465,7 +1493,15 @@ function commitSelection(){
   spBroadcastGrabState('none');
 }
 
-function deleteSelection(){if(!sel.active)return;sel.active=false;sel.floatImg=null;flash('Selection deleted');}
+function deleteSelection(){
+  if(!sel.active)return;
+  sel.active=false;sel.floatImg=null;
+  resizeOrigRect=null;resizeOrigImg=null;selRotAngle=0;
+  lCtx.clearRect(0,0,W*SCALE,H*SCALE);
+  spBroadcastCanvasSnap();
+  spBroadcastGrabState('none');
+  flash('Selection deleted');
+}
 
 // Update cursor for grab tool based on hover
 hc.addEventListener('mousemove',e=>{
