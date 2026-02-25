@@ -357,7 +357,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
       <div class="rg-body" style="flex-direction:column;gap:4px;justify-content:center;">
         <div class="wig-row">
           <span class="wig-lbl">Pixel Size</span>
-          <input class="wig-sl" type="range" id="pxSlider" min="1" max="3" value="2" step="1" oninput="changePixelSize(+this.value)">
+          <input class="wig-sl" type="range" id="pxSlider" min="1" max="4" value="2" step="1" oninput="changePixelSize(+this.value)">
           <span class="wig-val" id="pxv">2×</span>
         </div>
         <div class="wig-row">
@@ -1745,10 +1745,10 @@ document.addEventListener('drop',e=>{document.getElementById('img-drop-overlay')
 // Guide
 const GUIDE_SLIDES=[
   {title:'Welcome to Wiggly Paint',text:`Wiggly Paint — your drawings come alive with animated wiggle!<br><br>Use tools on the left sidebar or ribbon up top. Click <b>Next</b> for a tour.`},
-  {title:'String / Node Tool 🔴',text:`The <b>String tool</b> is the new shape maker:<br><br>&bull; <b>Click empty space</b> to place a node (blue dot)<br>&bull; <b>Click another node</b> to draw a string edge between them<br>&bull; <b>Drag a node</b> to reposition it — strings follow along<br>&bull; Nodes persist when you switch tools!<br>&bull; When loop is <b>sealed (closed)</b>, use the <b>Fill tool</b> to paint inside<br>&bull; Fill respects existing drawn content around it`},
+  {title:'String / Node Tool',text:`The <b>String tool</b> is the new shape maker:<br><br>&bull; <b>Click empty space</b> to place a node (blue dot)<br>&bull; <b>Click another node</b> to draw a string edge between them<br>&bull; <b>Drag a node</b> to reposition it — strings follow along<br>&bull; Nodes persist when you switch tools!<br>&bull; When loop is <b>sealed (closed)</b>, use the <b>Fill tool</b> to paint inside<br>&bull; Fill respects existing drawn content around it`},
   {title:'Grab Tool & Resize',text:`The <b>Grab tool</b> selects a rectangle of pixels:<br><br>&bull; <b>Drag</b> to draw selection — preview shows blue dashed outline while dragging<br>&bull; After release: <b>8 resize handles</b> appear at corners and edges<br>&bull; Drag handles to stretch/shrink the selection<br>&bull; <b>Drag inside</b> to move it<br>&bull; <b>Esc</b> stamps it back, <b>Delete</b> removes it`},
-  {title:'Wiggle Modes ✨',text:`Three wiggle modes to mix and match:<br><br>&bull; <b>〰 Wiggle</b> — pixels jitter around their drawn position in real time<br>&bull; <b>⚡ Snap</b> — pixels snap to discrete offsets instead of smooth waves<br>&bull; <b>〜 Line Wiggle</b> — the outer <i>edges</i> of your strokes expand and contract, making lines feel alive and breathing<br><br>You can combine Wiggle + Line Wiggle for a double-whammy effect! 🎉`},
-  {title:'Density & Pixels 🎛',text:`The <b>Density</b> slider controls how filled your drawings look in real time:<br><br>&bull; <b>0.1</b> — almost completely invisible, just a few flickering pixels<br>&bull; <b>5.0</b> — roughly half the pixels visible at any moment<br>&bull; <b>20.0</b> — nearly fully solid<br><br>Because each pixel has its own random phase, they shimmer in and out independently — not all at once. Affects every pixel on the canvas live!`},
+  {title:'Wiggle Modes',text:`Three wiggle modes to mix and match:<br><br>&bull; <b>〰 Wiggle</b> — pixels jitter around their drawn position in real time<br>&bull; <b>⚡ Snap</b> — pixels snap to discrete offsets instead of smooth waves<br>&bull; <b>〜 Line Wiggle</b> — the outer <i>edges</i> of your strokes expand and contract, making lines feel alive and breathing<br><br>You can combine Wiggle + Line Wiggle for a double-whammy effect!`},
+  {title:'Density & Pixels',text:`The <b>Density</b> slider controls how filled your drawings look in real time:<br><br>&bull; <b>0.1</b> — almost completely invisible, just a few flickering pixels<br>&bull; <b>5.0</b> — roughly half the pixels visible at any moment<br>&bull; <b>20.0</b> — nearly fully solid<br><br>Because each pixel has its own random phase, they shimmer in and out independently — not all at once. Affects every pixel on the canvas live!`},
   {title:'Wiggle & Export',text:`Everything wiggles in real time!<br><br>&bull; <b>View tab</b> → Px Move, Speed, Density, Snap controls<br>&bull; <b>Save GIF</b> exports an animated wiggly GIF<br>&bull; <b>Obliterate</b> explodes your art dramatically<br><br>Go make something wiggly! 🎉`}
 ];
 let guideSlide=0;
