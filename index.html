@@ -816,7 +816,7 @@ function applyLineWiggle(src, d, DW, DH, t){
   };
   // Amount of expansion oscillates per pixel via its phase
   // Max spread in screen pixels = ~SCALE * 0.7
-  const maxSpread=Math.max(1, SCALE * 0.75);
+  const maxSpread=Math.max(0.5, SCALE * 0.75 * wAmt);
   for(let py=0;py<H;py++){for(let px=0;px<W;px++){
     const si=(py*W+px)*4;
     const r=src[si],g=src[si+1],b=src[si+2],a=src[si+3];
