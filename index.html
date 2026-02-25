@@ -357,7 +357,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
       <div class="rg-body" style="flex-direction:column;gap:4px;justify-content:center;">
         <div class="wig-row">
           <span class="wig-lbl">Pixel Size</span>
-          <input class="wig-sl" type="range" id="pxSlider" min="1" max="8" value="2" step="1" oninput="changePixelSize(+this.value)">
+          <input class="wig-sl" type="range" id="pxSlider" min="1" max="3" value="2" step="1" oninput="changePixelSize(+this.value)">
           <span class="wig-val" id="pxv">2×</span>
         </div>
         <div class="wig-row">
@@ -367,7 +367,7 @@ body{font-family:Segoe UI,Tahoma,Arial,sans-serif;font-size:11px;overflow:hidden
         </div>
         <div class="wig-row">
           <span class="wig-lbl">Speed</span>
-          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="6" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
+          <input class="wig-sl" type="range" id="spSlider" min="0.5" max="16" step="0.1" value="2.5" oninput="wSpeed=+this.value;document.getElementById('spv').textContent=(+this.value).toFixed(1)+'×'">
           <span class="wig-val" id="spv">2.5×</span>
         </div>
         <div class="wig-row">
@@ -807,39 +807,21 @@ function toggleLineWiggle(){lineWiggleOn=!lineWiggleOn;const el=document.getElem
 // affected; interior pixels stay in place.
 // ──────────────────────────────────────────────────────────
 function applyLineWiggle(src, d, DW, DH, t){
-  // Identify edge pixels in the source draw buffer
-  // An edge pixel is non-white with at least one white 4-neighbor
-  const isWhiteSrc=(x,y)=>{
-    if(x<0||x>=W||y<0||y>=H) return true;
-    const i=(y*W+x)*4;
-    return src[i]>245&&src[i+1]>245&&src[i+2]>245;
-  };
-  // Amount of expansion oscillates per pixel via its phase
-  // Max spread in screen pixels = ~SCALE * 0.7
   const maxSpread=Math.max(0.5, SCALE * 0.75 * wAmt);
   for(let py=0;py<H;py++){for(let px=0;px<W;px++){
     const si=(py*W+px)*4;
     const r=src[si],g=src[si+1],b=src[si+2],a=src[si+3];
     if(a<10||(r>245&&g>245&&b>245)) continue;
-    // Only process edge pixels
-    const isEdge=isWhiteSrc(px-1,py)||isWhiteSrc(px+1,py)||isWhiteSrc(px,py-1)||isWhiteSrc(px,py+1);
-    if(!isEdge) continue;
     const pi=py*W+px;
-    // Oscillate between -maxSpread and +maxSpread, unique phase per pixel
-    const spread=Math.sin(t*1.3+phaseX[pi])*maxSpread;
-    if(spread<=0) continue; // shrink phase: pixel already drawn at normal size, skip extra
-    const iSpread=Math.round(spread);
-    // Stamp extra pixels outward from this edge pixel's normal position
-    const bpx=px*SCALE, bpy=py*SCALE;
-    for(let sy=-iSpread;sy<SCALE+iSpread;sy++){
-      for(let sx=-iSpread;sx<SCALE+iSpread;sx++){
-        // Only paint the border ring, not the interior (interior already painted)
-        if(sx>=0&&sx<SCALE&&sy>=0&&sy<SCALE) continue;
+    // Each pixel independently oscillates position — different freq/phase so they don't move in sync
+    const ddx=Math.sin(t*1.3+phaseX[pi])*maxSpread;
+    const ddy=Math.cos(t*1.1+phaseY[pi])*maxSpread;
+    const bpx=Math.round(px*SCALE+ddx), bpy=Math.round(py*SCALE+ddy);
+    for(let sy=0;sy<SCALE;sy++){
+      for(let sx=0;sx<SCALE;sx++){
         const dx2=bpx+sx, dy2=bpy+sy;
         if(dx2<0||dx2>=DW||dy2<0||dy2>=DH) continue;
         const di=(dy2*DW+dx2)*4;
-        // Only overwrite white pixels (don't trample existing drawn pixels)
-        if(d[di]<245||d[di+1]<245||d[di+2]<245) continue;
         d[di]=r;d[di+1]=g;d[di+2]=b;d[di+3]=255;
       }
     }
